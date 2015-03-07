@@ -23,23 +23,17 @@ require PLD_DIR_MODULES . 'common_module_include.php';
 
 ?>
 
-<style text="text/css">
+<ul class="breadcrumbs">
+  <li class="current"><a href="#">Home</a></li>
+</ul>
 
-table.fullWidth {
-   width: 100%;
-   margin-left: auto;
-   margin-right: auto;
-   max-width: initial;
-}
-
-</style>
-
+<a name="classesAndInterfaces"></a>
 <h2>Classes and interfaces</h2><?php
 $types = \phpLiveDoc\Services::getTypes()
                              ->toArray();
 if (!empty($types)) {
 	?>
-	<table class="fullWidth">
+	<table class="pdlFullWidth">
 	  <thead>
 	    <tr>
 	      <th>Name</th>
@@ -55,8 +49,14 @@ if (!empty($types)) {
 	    ?>
 	    
 	    <tr>
-	      <td><?php echo htmlentities($t->getName()); ?></td>
-	      <td><?php echo htmlentities($doc->getShortDescription()); ?></td>
+	      <td>
+	        <a href="index.php?m=typeDetails&t=<?php echo urlencode($t->getName()); ?>">
+	          <?php echo htmlentities($t->getName()); ?>
+	        </a>
+	      </td>
+	      <td>
+	        <?php echo htmlentities($doc->getShortDescription()); ?>
+	      </td>
 	    </tr>
 	    
 	    <?php } ?>
@@ -68,7 +68,7 @@ if (!empty($types)) {
 }
 else {
 	?>
-<div data-alert class="alert-box warning">No types defined.</div>
+<div data-alert class="alert-box">No types defined.</div>
 	<?php
 }
 
@@ -79,7 +79,7 @@ $funcs = \phpLiveDoc\Services::getFuncs()
                              ->toArray();
 if (!empty($funcs)) {
 	?>
-	<table class="fullWidth">
+	<table class="pdlFullWidth">
 	  <thead>
 	    <tr>
 	      <th>Name</th>
@@ -108,7 +108,7 @@ if (!empty($funcs)) {
 }
 else {
 	?>
-<div data-alert class="alert-box warning">No functions defined.</div>
+<div data-alert class="alert-box">No functions defined.</div>
 	<?php
 }
 ?>

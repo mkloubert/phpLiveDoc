@@ -114,4 +114,20 @@ final class Services {
 	
 		return self::$_types[$tn] = new \ReflectionClass($tn);
 	}
+	
+	/**
+	 * Tries to return a reflector object by name.
+	 * 
+	 * @param string $tn The name of the type.
+	 * 
+	 * @return \ReflectionClass The object or (null) if not found.
+	 */
+	public static function tryGetType($tn) {
+		$tn = trim($tn);
+		if (isset(self::$_types[$tn])) {
+			return self::$_types[$tn];
+		}
+		
+		return null;
+	}
 }

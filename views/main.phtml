@@ -30,7 +30,11 @@ require PLD_DIR_VIEWS . 'common_view_include.php';
     
     <title>phpLiveDoc :: <?php echo htmlentities($this->title); ?></title>
     
+    <!--  highlight.js  -->
+    <link href="css/highlight/default.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/foundation.css" />
+    
     <link rel="stylesheet" href="css/style.css" />
     
     <script src="js/vendor/modernizr.js"></script>
@@ -71,12 +75,13 @@ require PLD_DIR_VIEWS . 'common_view_include.php';
   	</div>
     
     <script src="js/vendor/jquery.js"></script>
+    <script src="js/vendor/highlight.pack.js"></script>
     <script src="js/foundation.min.js"></script>
     <script src="js/jsToolbox.min.js"></script>
     
     <script>
         $jsTB.page.addOnLoaded(function() {
-            
+        	hljs.initHighlighting();
         });
     
         $(document).foundation();
