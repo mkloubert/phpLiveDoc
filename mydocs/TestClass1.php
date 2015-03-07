@@ -8,18 +8,22 @@
  *
  */
 interface IMyInterface extends \Iterator {
-	/**
-	 * The method wirh the name B.
-	 */
-	function methodB();
-	
-	/**
-	 * A method that is called 'A'
-	 * 
-	 * @param array $a1 First argument 
-	 * @param callable $a3 3rd one
-	 */
-	function methodA($a3, array $a1 = array(), $a2 = null, $a4 = 'TM');
+    /**
+     * The method wirh the name B.
+     * 
+     * @author Marcel Kloubert
+     * 
+     * @return string Returns a string.
+     */
+    function methodB();
+    
+    /**
+     * A method that is called 'A'
+     * 
+     * @param array $a1 First argument 
+     * @param callable $a3 3rd one
+     */
+    function methodA($a3, array $a1 = array(), $a2 = null, $a4 = 'TM');
 }
 
 /**
@@ -29,7 +33,7 @@ interface IMyInterface extends \Iterator {
  *
  */
 class TestClass1 {
-	const MK_CONSTANT = 23979;
+    const MK_CONSTANT = 23979;
 }
 
 /**
@@ -39,20 +43,20 @@ class TestClass1 {
  *
  */
 abstract class TestClass2 extends TestClass1 implements IMyInterface {
-	const TM_CONSTANT = 'TM';
-	
-	/**
-	 * My 2nd test prop
-	 * 
-	 * @var integer
-	 */
-	public $TestProp2 = 23979;
-	/**
-	 * My test prop
-	 *
-	 * @var string
-	 */
-	public $TestProp1 = 'YS';
+    const TM_CONSTANT = 'TM';
+    
+    /**
+     * My 2nd test prop
+     * 
+     * @var integer
+     */
+    public $TestProp2 = 23979;
+    /**
+     * My test prop
+     *
+     * @var string
+     */
+    public $TestProp1 = 'YS';
 }
 
 final class TestClass3 extends TestClass1 {

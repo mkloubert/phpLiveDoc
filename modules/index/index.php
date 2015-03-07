@@ -21,6 +21,8 @@
 require PLD_DIR_MODULES . 'common_module_include.php';
 
 
+\phpLiveDoc\Page\Settings::$Title = 'Home';
+
 ?>
 
 <ul class="breadcrumbs">

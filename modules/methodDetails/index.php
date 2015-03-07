@@ -164,9 +164,8 @@ echo $prefix; ?>function <?php echo htmlentities($methodName); ?>(<?php echo $pa
         ?><div data-alert class="alert-box secondary">No parameters found.</div><?php
     }
 
-?>
-
-<?php
+    phpLiveDoc\Helpers\DocumentationHelper::outputTagListOfDocBlock($methodDoc);
+    
     }
     else {
         ?><div data-alert class="alert-box warning">Method not found!</div><?php

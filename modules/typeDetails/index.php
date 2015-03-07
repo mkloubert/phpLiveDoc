@@ -82,7 +82,7 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
         }
         
         \phpLiveDoc\Page\Settings::$Title = sprintf('%s %s',
-        		                                    $typeName, $kindOfType);
+                                                    $typeName, $kindOfType);
         
 ?>
     <ul class="breadcrumbs">
@@ -146,7 +146,7 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
 <?php
     
     ?></code></pre>
-    
+
     <h3>Members</h3>
     
     <a name="constants"></a>
@@ -155,39 +155,39 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
     
     $contants = $type->getConstants();
     if (!empty($contants)) {
-    	uksort($contants, function($x, $y) {
-    		return strcmp(trim(strtolower($x)),
-    				      trim(strtolower($y)));
-    	});
-    	
-    	?>
-    	<table class="pdlFullWidth">
-    	  <thead>
+        uksort($contants, function($x, $y) {
+            return strcmp(trim(strtolower($x)),
+                          trim(strtolower($y)));
+        });
+        
+        ?>
+        <table class="pdlFullWidth">
+          <thead>
             <tr>
-    		  <th>Name</th>
-    		  <th>Description</th>
-    		</tr>
-    	  </thead>  
-    	  
-    	  <tbody>
-    	  <?php 
-    	  
-    	  foreach ($contants as $constName => $constValue) {
-    	  	  ?>
-    	  	  <tr>
-    	  	    <td><?php echo htmlentities($constName); ?></td>
-    	  	    <td><?php echo htmlentities(var_export($constValue, true)); ?></td>
-    	  	  </tr>
-    	  	  <?php
-    	  }
-    	  
-    	  ?>
-    	  </tbody>
-    	</table>
-    	<?php
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>  
+          
+          <tbody>
+          <?php 
+          
+          foreach ($contants as $constName => $constValue) {
+                ?>
+                <tr>
+                  <td><?php echo htmlentities($constName); ?></td>
+                  <td><?php echo htmlentities(var_export($constValue, true)); ?></td>
+                </tr>
+                <?php
+          }
+          
+          ?>
+          </tbody>
+        </table>
+        <?php
     }
     else {
-    	?><div data-alert class="alert-box secondary">No constants found.</div><?php
+        ?><div data-alert class="alert-box secondary">No constants found.</div><?php
     }
     
     ?>
@@ -242,45 +242,45 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
     
     $properties = Enumerable::fromArray($type->getProperties())
                             ->orderBy(function(\ReflectionProperty $rp) {
-    	                                  return trim(strtolower($rp->getName()));
+                                          return trim(strtolower($rp->getName()));
                                       })
                             ->toArray();
     
     if (!empty($properties)) {
-    	?>
-    	<table class="pdlFullWidth">
-    	  <thead>
+        ?>
+        <table class="pdlFullWidth">
+          <thead>
             <tr>
-    		  <th>Name</th>
-    		  <th>Description</th>
-    		</tr>
-    	  </thead>  
-    	  
-    	  <tbody>
-    	  <?php 
-    	  
-    	  foreach ($properties as $p) {
-    	  	  $propDoc = new \phpDocumentor\Reflection\DocBlock($p->getDocComment());
-    	  	
-    	  	  ?>
-    	  	  <tr>
-    	  	    <td><?php echo htmlentities($p->getName()); ?></td>
-    	  	    <td><?php echo htmlentities($propDoc->getText()); ?></td>
-    	  	  </tr>
-    	  	  <?php
-    	  }
-    	  
-    	  ?>
-    	  </tbody>
-    	</table>
-    	<?php
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>  
+          
+          <tbody>
+          <?php 
+          
+          foreach ($properties as $p) {
+                $propDoc = new \phpDocumentor\Reflection\DocBlock($p->getDocComment());
+              
+                ?>
+                <tr>
+                  <td><?php echo htmlentities($p->getName()); ?></td>
+                  <td><?php echo htmlentities($propDoc->getText()); ?></td>
+                </tr>
+                <?php
+          }
+          
+          ?>
+          </tbody>
+        </table>
+        <?php
     }
     else {
-    	?><div data-alert class="alert-box secondary">No properties found.</div><?php
+        ?><div data-alert class="alert-box secondary">No properties found.</div><?php
     }
     
-    ?>
-<?php
+    phpLiveDoc\Helpers\DocumentationHelper::outputTagListOfDocBlock($typeDoc);
+    
     }
     else {
   ?>

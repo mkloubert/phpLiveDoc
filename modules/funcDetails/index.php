@@ -127,15 +127,15 @@ echo $prefix; ?>function <?php echo htmlentities($funcName); ?>(<?php echo $para
         
 ?>
       </tbody>
+    </table>
 <?php
     }
     else {
         ?><div data-alert class="alert-box secondary">No parameters found.</div><?php
     }
 
-?>
+    phpLiveDoc\Helpers\DocumentationHelper::outputTagListOfDocBlock($funcDoc);
 
-<?php
     }
     else {
         ?><div data-alert class="alert-box warning">Function not found!</div><?php
