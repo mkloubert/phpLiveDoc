@@ -18,44 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require PLD_DIR_VIEWS . 'common_view_include.php';
 
-namespace phpLiveDoc\Page;
 
-
-/**
- * Global class for handling page settings / output.
- *  
- * @author Marcel Joachim Kloubert <marcel.kloubert@gmx.net>
- */
-final class Settings {
-    /**
-     * Stores the page title.
-     * 
-     * @var string
-     */
-    public static $Title = null;
-    
-    /**
-     * Stores the name of the view to output.
-     * 
-     * @var string
-     */
-    public static $View = 'main';
-    
-    
-    private function __construct() {
-    }
-    
-    
-    /**
-     * Sets out response for JSON output.
-     *
-     * @param string $charset The custom charset to use.
-     */
-    public static function setupForJson($charset = 'utf-8') {
-        self::$View = 'json';
-    
-        header(sprintf('Content-Type: application/json;charset=%s',
-                       trim(strtolower($charset))));
-    }
-}
+echo json_encode($this->content);

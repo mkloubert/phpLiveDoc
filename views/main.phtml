@@ -57,12 +57,8 @@ require PLD_DIR_VIEWS . 'common_view_include.php';
         <ul class="left">
           <li class="has-form">
             <div class="row collapse">
-              <div class="large-8 small-9 columns">
-                <input type="text">
-              </div>
-              
-              <div class="large-4 small-3 columns">
-                <a href="#" class="alert button expand">Search</a>
+              <div class="large-12 small-9 columns">
+                <input type="text" id="pldSearch" placeholder="Search">
               </div>
             </div>
           </li>
@@ -75,13 +71,53 @@ require PLD_DIR_VIEWS . 'common_view_include.php';
       </div>
     
     <script src="js/vendor/jquery.js"></script>
+    <script src="js/vendor/jquery-ui.min.js"></script>
     <script src="js/vendor/highlight.pack.js"></script>
     <script src="js/foundation.min.js"></script>
     <script src="js/jsToolbox.min.js"></script>
     
+    <style type="text/css">
+    
+    .ui-helper-hidden-accessible{display:none}
+    
+    </style>
+    
     <script>
         $jsTB.page.addOnLoaded(function() {
             hljs.initHighlighting();
+        });
+
+        $jsTB.page.addOnLoaded(function() {
+            $jsTB.$("#pldSearch").autocomplete({
+                source: function(req, resp) {
+                    var expr = $jsTB.$.trim($jsTB.$("#pldSearch").val());
+                    if (expr.length < 2) {
+                        return;
+                    }
+
+                    $jsTB.$.ajax({
+                        url: 'index.php',
+                        type: 'POST',
+                        data: {
+                            'e': expr,
+                            'm': 'search'
+                        },
+                        success: function(data) {
+                            resp(data);
+                        },
+                    });
+                },
+                
+                select: function(event, ui) {
+                    window.location.href = ui.item.link;
+                }
+            });
+
+            $('.ui-autocomplete').addClass('f-dropdown');
+        });
+
+        $jsTB.page.addOnLoaded(function() {
+        	$jsTB.$("#pldSearch").focus();
         });
     
         $(document).foundation();
