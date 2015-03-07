@@ -13,6 +13,7 @@
                 "./classes/System/Linq/IGrouping.php",
                 "./classes/System/Linq/ILookup.php",
                 "./classes/System/Collections/IList.php",
+                "./classes/System/Collections/IDictionary.php",
                 "./classes/System/Collections/Generic/EnumerableBase.php",
                 "./classes/System/Collections/Generic/Set.php",
                 "./classes/System/Collections/Collection.php",
