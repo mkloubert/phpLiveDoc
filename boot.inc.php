@@ -103,3 +103,38 @@ if (isset($conf['classes'])) {
 	unset($prevLoadedClasses);
 }
 
+// load constants
+if (isset($conf['constants'])) {
+	$getDefinedConstants = function() {
+		return array_keys(get_defined_constants());
+	};
+	
+	$prevLoadedConstants = $getDefinedConstants();
+	
+	foreach ($conf['constants'] as $entry) {
+		if (!isset($entry['source'])) {
+			continue;
+		}
+		
+		switch (trim(strtolower($entry['source']))) {
+			case 'include_file':
+				if (isset($entry['path'])) {
+					require_once realpath($entry['path']);
+				}
+				break;
+		}
+		
+		$loadedConstants     = $getDefinedConstants();
+		$diffLoadedConstants = array_diff($loadedConstants, $prevLoadedConstants);
+
+		foreach ($diffLoadedConstants as $constName) {
+			\phpLiveDoc\Services::registerConstant($constName);
+		}
+		
+		$prevLoadedClasses = $loadedConstants;
+		unset($diffLoadedConstants);
+	}
+	
+	unset($prevLoadedConstants);
+}
+

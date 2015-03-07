@@ -6,6 +6,13 @@
         }
     ],
     
+    "constants": [
+        {
+            "source": "include_file",
+            "path": "./mydocs/myConstants.php"
+        }
+    ],
+    
     "functions": [
         {
             "source": "include_file",

@@ -74,6 +74,49 @@ else {
 
 ?>
 
+<a name="constants"></a>
+<h2>Constants</h2><?php
+
+$constants = \phpLiveDoc\Services::getConstants()
+                                 ->toArray();
+if (!empty($constants)) {
+	?>
+	<table class="pdlFullWidth">
+	  <thead>
+	    <tr>
+	      <th>Name</th>
+	      <th>Description</th>
+	    </tr>
+	  </thead>	
+	  
+	  <tbody>
+	<?php	
+	
+	foreach ($constants as $cn) {
+		?>
+		<tr>
+	      <td>
+	        <?php echo htmlentities($cn); ?>
+	      </td>
+	      
+	      <td>&nbsp;</td>
+	    </tr>
+		<?php
+	}
+	
+	?>
+	  </tbody>
+	</table>
+	<?php
+}
+else {
+?>
+<div data-alert class="alert-box">No constants defined.</div>
+<?php
+}
+
+?>
+
 <a name="functions"></a>
 <h2>Functions</h2><?php
 $funcs = \phpLiveDoc\Services::getFuncs()
@@ -117,4 +160,3 @@ else {
 <div data-alert class="alert-box">No functions defined.</div>
 	<?php
 }
-?>

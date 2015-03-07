@@ -34,15 +34,19 @@ final class Services {
 	/**
 	 * @var array
 	 */
-	private static $_conf  = null;
+	private static $_constants = array();
 	/**
 	 * @var array
 	 */
-	private static $_funcs = array();
+	private static $_conf      = null;
 	/**
 	 * @var array
 	 */
-	private static $_types = array();
+	private static $_funcs     = array();
+	/**
+	 * @var array
+	 */
+	private static $_types     = array();
 	
 	
 	private function __construct() {	
@@ -63,6 +67,18 @@ final class Services {
 		}
 	
 		return self::$_conf;
+	}
+	
+	/**
+	 * Returns the list of registrated constants.
+	 * 
+	 * @return \System\Collections\Generic\IEnumerable The list of constants.
+	 */
+	public static function getConstants() {
+		return Enumerable::fromArray(self::$_constants)
+		                 ->orderBy(function($cn) {
+		                 	           return trim(strtolower($cn));
+		                           });
 	}
 	
 	/**
@@ -87,6 +103,19 @@ final class Services {
 		->orderBy(function(\ReflectionClass $rc) {
 			return trim(strtolower($rc->getName()));
 		});
+	}
+	
+	/**
+	 * Registers a constant.
+	 * 
+	 * @param string $cn The new of the constant.
+	 * 
+	 * @return string The name of the registrated constant.
+	 */
+	public static function registerConstant($cn) {
+		$cn = trim($cn);
+		
+		return self::$_constants[$cn] = $cn;
 	}
 	
 	/**
