@@ -26,9 +26,11 @@ use System\Linq\Enumerable;
 \phpLiveDoc\Page\Settings::setupForJson();
 
 
-$funcs     = array();
-$types     = array();
-$constants = array();
+$constants  = array();
+$funcs      = array();
+$methods    = array();
+$properties = array();
+$types      = array();
 
 
 $addResult = function(&$items, $displayText, $link) {
@@ -84,10 +86,69 @@ if (isset($_REQUEST['e'])) {
         
                 if ($wasFound($expr, $searchHere)) {
                     $addResult($types,
-                               sprintf('%s() %s', $typeName
-                                                , $typeKindOf),
+                               sprintf('%s %s', $typeName
+                                               , $typeKindOf),
                                sprintf('index.php?m=typeDetails&t=%s',
                                        urlencode($typeName)));
+                }
+                
+                // constants
+                foreach ($t->getConstants() as $constName => $constVal) {
+                    $searchHere2  = $searchHere;
+                    $searchHere2 .= $constName;
+                    $searchHere2 .= 'constants';
+                    
+                    if ($wasFound($expr, $searchHere2)) {
+                        $addResult($types,
+                                   sprintf('%s %s of %s %s', $constName
+                                                           , 'constant'
+                                                              , $typeName
+                                                              , $typeKindOf),
+                                   sprintf('index.php?m=typeDetails&t=%s&mark=%s',
+                                           urlencode($typeName),
+                                              urlencode($constName)));   
+                    }
+                }
+                
+                // methods
+                foreach ($t->getMethods() as $m) {
+                    $methodName = $m->getName();
+                    
+                    $searchHere2  = $searchHere;
+                    $searchHere2 .= $methodName;
+                    $searchHere2 .= 'methods';
+                    
+                    if ($wasFound($expr, $searchHere2)) {
+                        $addResult($methods,
+                                   sprintf('%s %s of %s %s', $methodName
+                                                           , 'method'
+                                                           , $typeName
+                                                           , $typeKindOf),
+                                   sprintf('index.php?m=typeDetails&t=%s&mark=%s',
+                                           urlencode($typeName),
+                                           urlencode($methodName)));
+                    }
+                }
+                
+                // properties
+                foreach ($t->getProperties() as $p) {
+                    $propertyName = $p->getName();
+                    
+                    $searchHere2  = $searchHere;
+                    $searchHere2 .= $propertyName;
+                    $searchHere2 .= 'property';
+                    $searchHere2 .= 'properties';
+                    
+                    if ($wasFound($expr, $searchHere2)) {
+                        $addResult($properties,
+                                   sprintf('%s %s of %s %s', $propertyName
+                                                           , 'property'
+                                                           , $typeName
+                                                           , $typeKindOf),
+                                   sprintf('index.php?m=typeDetails&t=%s&mark=%s',
+                                           urlencode($typeName),
+                                           urlencode($propertyName)));
+                    }
                 }
             }
         }
@@ -116,7 +177,7 @@ if (isset($_REQUEST['e'])) {
     }
 }
 
-$setResult(Enumerable::fromArray(array_merge($types, $funcs, $constants))
+$setResult(Enumerable::fromArray(array_merge($types, $funcs, $constants, $methods, $properties))
                      ->orderBy(function(\stdClass $item) {
                                     return trim(strtolower($item->label));
                                })

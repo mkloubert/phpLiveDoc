@@ -3,6 +3,25 @@
         {
             "source": "include_file",
             "path": "./mydocs/TestClass1.php"
+        },
+        {
+            "source": "include_files",
+            "paths": [
+                "./classes/System/Collections/Generic/IEnumerable.php",
+                "./classes/System/Collections/Generic/EnumerableException.php",
+                "./classes/System/Collections/Generic/ISet.php",
+                "./classes/System/Linq/IGrouping.php",
+                "./classes/System/Linq/ILookup.php",
+                "./classes/System/Collections/IList.php",
+                "./classes/System/Collections/Generic/EnumerableBase.php",
+                "./classes/System/Collections/Generic/Set.php",
+                "./classes/System/Collections/Collection.php",
+                "./classes/System/Collections/DictionaryEntry.php",
+                "./classes/System/Collections/Dictionary.php",
+                "./classes/System/Linq/Grouping.php",
+                "./classes/System/Linq/Lookup.php",
+                "./classes/System/Linq/Enumerable.php"
+            ]
         }
     ],
     

@@ -87,6 +87,14 @@ if (isset($conf['classes'])) {
                     require_once realpath($entry['path']);
                 }
                 break;
+                
+            case 'include_files':
+                if (isset($entry['paths'])) {
+                    foreach ($entry['paths'] as $p) {
+                        require_once realpath($p);
+                    }
+                }
+                break;
         }
         
         $loadedClasses     = $getDeclaredTypes();
