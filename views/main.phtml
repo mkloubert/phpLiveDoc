@@ -72,8 +72,14 @@ require PLD_DIR_VIEWS . 'common_view_include.php';
     
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
+    <script src="js/jsToolbox.min.js"></script>
+    
     <script>
-      $(document).foundation();
+        $jsTB.page.addOnLoaded(function() {
+            
+        });
+    
+        $(document).foundation();
     </script>
   </body>
 </html>

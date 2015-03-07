@@ -25,6 +25,7 @@ define('PLD_INDEX', true, false);
 
 require_once './global.inc.php';
 
+require_once './boot.inc.php';
 
 try {
 	// get module name
@@ -33,8 +34,6 @@ try {
 		$moduleName = $_REQUEST['m'];
 	}
 	
-	
-
 	// get module instance
 	$module = \phpLiveDoc\Modules\Module::getModuleSafe($moduleName);
 	
@@ -59,3 +58,5 @@ try {
 catch (\Exception $e) {
 	die($e);
 }
+
+require_once './shutdown.inc.php';

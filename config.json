@@ -1,7 +1,15 @@
 {
     "classes": [
+        {
+            "source": "include_file",
+            "path": "./mydocs/TestClass1.php"
+        }
     ],
     
     "functions": [
+        {
+            "source": "include_file",
+            "path": "./mydocs/myFuncs.php"
+        }
     ]
 }

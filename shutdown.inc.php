@@ -19,30 +19,6 @@
  */
 
 
-defined('PLD_INDEX') or die();
+defined('PLD_BOOT') or die();
 
-define('PLD_GLOBAL', true, false);
-
-
-define('PLD_DIR_ROOT'   , '.' . DIRECTORY_SEPARATOR                     , false);
-define('PLD_DIR_CLASSES', PLD_DIR_ROOT . 'classes' . DIRECTORY_SEPARATOR, false);
-define('PLD_DIR_MODULES', PLD_DIR_ROOT . 'modules' . DIRECTORY_SEPARATOR, false);
-define('PLD_DIR_VIEWS'  , PLD_DIR_ROOT . 'views' . DIRECTORY_SEPARATOR  , false);
-
-
-// update include paths
-set_include_path(get_include_path() . PATH_SEPARATOR
-                                    . PLD_DIR_CLASSES);
-
-
-/**
- * Autoloader
- *
- * @param string $clsName The name of the class to load.
- */
-function __autoload($clsName) {
-	require_once sprintf('%s%s%s',
-			             PLD_DIR_CLASSES,
-			             str_ireplace('\\', DIRECTORY_SEPARATOR, $clsName),
-			             '.php');
-}
+define('PLD_SHUTDOWN', true, false);
