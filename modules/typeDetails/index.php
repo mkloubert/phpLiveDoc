@@ -81,6 +81,9 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
             $kindOfType = 'interface';
         }
         
+        \phpLiveDoc\Page\Settings::$Title = sprintf('%s %s',
+        		                                    $typeName, $kindOfType);
+        
 ?>
     <ul class="breadcrumbs">
       <li><a href="index.php">Home</a></li>
@@ -88,7 +91,7 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
       <li class="current"><a href="#"><?php echo htmlentities($type->getName()); ?></a></li>
     </ul>
 
-    <h2><?php echo htmlentities($typeName); ?> <?php echo htmlentities($kindOfType); ?></h2>
+    <h2><?php echo htmlentities(\phpLiveDoc\Page\Settings::$Title); ?></h2>
     
     <p><?php echo htmlentities($typeDesc); ?></p>
     
@@ -146,6 +149,49 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
     
     <h3>Members</h3>
     
+    <a name="constants"></a>
+    <h4>Constants</h4>
+    <?php 
+    
+    $contants = $type->getConstants();
+    if (!empty($contants)) {
+    	uksort($contants, function($x, $y) {
+    		return strcmp(trim(strtolower($x)),
+    				      trim(strtolower($y)));
+    	});
+    	
+    	?>
+    	<table class="pdlFullWidth">
+    	  <thead>
+            <tr>
+    		  <th>Name</th>
+    		  <th>Description</th>
+    		</tr>
+    	  </thead>  
+    	  
+    	  <tbody>
+    	  <?php 
+    	  
+    	  foreach ($contants as $constName => $constValue) {
+    	  	  ?>
+    	  	  <tr>
+    	  	    <td><?php echo htmlentities($constName); ?></td>
+    	  	    <td><?php echo htmlentities(var_export($constValue, true)); ?></td>
+    	  	  </tr>
+    	  	  <?php
+    	  }
+    	  
+    	  ?>
+    	  </tbody>
+    	</table>
+    	<?php
+    }
+    else {
+    	?><div data-alert class="alert-box secondary">No constants found.</div><?php
+    }
+    
+    ?>
+    
     <a name="methods"></a>
     <h4>Methods</h4>
     <?php
@@ -157,7 +203,7 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Description</th>
+                <th>Value</th>
               </tr>
             </thead>
               
@@ -186,6 +232,51 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
     }
     else {
         ?><div data-alert class="alert-box secondary">No methods found.</div><?php
+    }
+    
+    ?>
+    
+    <a name="properties"></a>
+    <h4>Properties</h4>
+    <?php 
+    
+    $properties = Enumerable::fromArray($type->getProperties())
+                            ->orderBy(function(\ReflectionProperty $rp) {
+    	                                  return trim(strtolower($rp->getName()));
+                                      })
+                            ->toArray();
+    
+    if (!empty($properties)) {
+    	?>
+    	<table class="pdlFullWidth">
+    	  <thead>
+            <tr>
+    		  <th>Name</th>
+    		  <th>Description</th>
+    		</tr>
+    	  </thead>  
+    	  
+    	  <tbody>
+    	  <?php 
+    	  
+    	  foreach ($properties as $p) {
+    	  	  $propDoc = new \phpDocumentor\Reflection\DocBlock($p->getDocComment());
+    	  	
+    	  	  ?>
+    	  	  <tr>
+    	  	    <td><?php echo htmlentities($p->getName()); ?></td>
+    	  	    <td><?php echo htmlentities($propDoc->getText()); ?></td>
+    	  	  </tr>
+    	  	  <?php
+    	  }
+    	  
+    	  ?>
+    	  </tbody>
+    	</table>
+    	<?php
+    }
+    else {
+    	?><div data-alert class="alert-box secondary">No properties found.</div><?php
     }
     
     ?>

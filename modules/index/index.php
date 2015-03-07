@@ -44,7 +44,7 @@ if (!empty($types)) {
       <tbody>
         <?php
           foreach($types as $t) {
-                $doc = new \phpDocumentor\Reflection\DocBlock($t->getDocComment());
+              $doc = new \phpDocumentor\Reflection\DocBlock($t->getDocComment());
                 
         ?>
         
@@ -134,7 +134,7 @@ if (!empty($funcs)) {
       <tbody>
         <?php
           foreach($funcs as $f) {
-                $doc = new \phpDocumentor\Reflection\DocBlock($f->getDocComment());
+              $doc = new \phpDocumentor\Reflection\DocBlock($f->getDocComment());
                 
         ?>
         

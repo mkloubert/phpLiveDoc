@@ -68,7 +68,13 @@ if ($type instanceof \ReflectionClass) {
   <li class="current"><a href="#"><?php echo htmlentities($methodName); ?></a></li>
 </ul>
 
-    <h2><?php echo htmlentities($methodName); ?> method</h2>
+    <?php 
+    
+    \phpLiveDoc\Page\Settings::$Title = $methodName . ' method';
+    
+    ?>
+
+    <h2><?php echo htmlentities(\phpLiveDoc\Page\Settings::$Title); ?></h2>
     
     <p><?php echo htmlentities($methodDesc); ?></p>
     

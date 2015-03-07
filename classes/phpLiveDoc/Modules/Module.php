@@ -52,7 +52,7 @@ class Module extends TM_Object implements IModule {
     
     /**
      * (non-PHPdoc)
-     * @see \PDM\Modules\IModule::execute()
+     * @see \phpLiveDoc\Modules\IModule::execute()
      */
     public function execute() {
         $result = false;

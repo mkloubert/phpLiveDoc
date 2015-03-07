@@ -29,6 +29,7 @@ interface IMyInterface extends \Iterator {
  *
  */
 class TestClass1 {
+	const MK_CONSTANT = 23979;
 }
 
 /**
@@ -38,7 +39,20 @@ class TestClass1 {
  *
  */
 abstract class TestClass2 extends TestClass1 implements IMyInterface {
+	const TM_CONSTANT = 'TM';
 	
+	/**
+	 * My 2nd test prop
+	 * 
+	 * @var integer
+	 */
+	public $TestProp2 = 23979;
+	/**
+	 * My test prop
+	 *
+	 * @var string
+	 */
+	public $TestProp1 = 'YS';
 }
 
 final class TestClass3 extends TestClass1 {
