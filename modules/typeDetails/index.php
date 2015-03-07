@@ -40,6 +40,25 @@ $getNameOfReflectorItem = function($r) {
 	return $r->getName();
 };
 
+$typeLinkOrString = function($type) {
+	$result = $type;
+	
+	$typeLink = \phpLiveDoc\Helpers\ReflectionHelper::tryGetLinkUrlFromType($type);
+	if (!is_null($typeLink)) {
+		$result = sprintf('<a href="%s" target="_blank">%s</a>',
+				          $typeLink,
+				          $type);
+	}
+	
+	return $result;
+};
+
+$getNameOfReflectorItemWithLink = function($r) use ($getNameOfReflectorItem, $typeLinkOrString) {
+	$result = $getNameOfReflectorItem($r);
+	
+	return $typeLinkOrString($result);
+};
+
 $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
 	return trim(strtolower($getNameOfReflectorItem($r)));
 };
@@ -87,7 +106,7 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
                                           
         if (!empty($interfaces)) {
         	$suffix .= ' extends ' . Enumerable::fromArray($interfaces)
-        	                                   ->select($getNameOfReflectorItem)
+        	                                   ->select($getNameOfReflectorItemWithLink)
         	                                   ->stringJoin(', ');
         }
     }
@@ -96,17 +115,16 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
     	
     	$parent = $type->getParentClass();
     	if ($parent instanceof \ReflectionClass) {
-    		$suffix .= ' extends ' . $parent->getName();
+    		$suffix .= ' extends ' . $typeLinkOrString($parent->getName());
     	}
     	
     	$interfaces = Enumerable::fromArray($type->getInterfaces())
     	                        ->orderBy($getNameOfReflectorItemForSort)
     	                        ->toArray();
-    	
-    	
+    	  	
         if (!empty($interfaces)) {
         	$suffix .= ' implements ' . Enumerable::fromArray($interfaces)
-        	                                      ->select($getNameOfReflectorItem)
+        	                                      ->select($getNameOfReflectorItemWithLink)
         	                                      ->stringJoin(', ');
         }
     }
@@ -119,7 +137,7 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
     	$prefix = 'abstract ';
     }
 
-?><?php echo htmlentities($prefix); ?><?php echo htmlentities($kindOfType); ?> <?php echo htmlentities($typeName); ?><?php echo htmlentities($suffix); ?> {
+?><?php echo $prefix; ?><?php echo htmlentities($kindOfType); ?> <?php echo htmlentities($typeName); ?><?php echo $suffix; ?> {
     // members...
 }
 <?php

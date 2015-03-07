@@ -23,34 +23,22 @@ require PLD_DIR_MODULES . 'common_module_include.php';
 use System\Linq\Enumerable;
 
 
-$type = null;
-if (isset($_REQUEST['t'])) {
-	$typeName = trim($_REQUEST['t']);
-	if (!empty($typeName)) {
-		$type = \phpLiveDoc\Services::tryGetType($typeName);
+$func = null;
+if (isset($_REQUEST['f'])) {
+	$funcName = trim($_REQUEST['f']);
+	if (!empty($funcName)) {
+		$func = \phpLiveDoc\Services::tryGetFunc($funcName);
 	}
 }
 
-if ($type instanceof \ReflectionClass) {
-	$method = null;
-	if (isset($_REQUEST['tm'])) {
-		$methodName = trim($_REQUEST['tm']);
-		if (!empty($methodName)) {
-			try {
-				$method = $type->getMethod($methodName);
-			}
-			catch (\ReflectionException $ex) {
-				$method = null;
-			}
-		}
-	}
-	
-	if ($method instanceof \ReflectionMethod) {
-		$methodDoc = new \phpDocumentor\Reflection\DocBlock($method->getDocComment());
+//
+{
+	if ($func instanceof \ReflectionFunction) {
+		$funcDoc = new \phpDocumentor\Reflection\DocBlock($func->getDocComment());
 		
-		$methodName   = $method->getName();
-		$methodDesc   = $methodDoc->getText();
-		$methodParams = $method->getParameters();
+		$funcName   = $func->getName();
+		$funcDesc   = $funcDoc->getText();
+		$funcParams = $func->getParameters();
 		
 ?>
 
@@ -62,40 +50,21 @@ if ($type instanceof \ReflectionClass) {
 
 <ul class="breadcrumbs">
   <li><a href="index.php">Home</a></li>
-  <li><a href="index.php#classesAndInterfaces">Classes and interfaces</a></li>
-  <li><a href="index.php?m=typeDetails&t=<?php echo urlencode($type->getName()); ?>"><?php echo htmlentities($type->getName()); ?></a></li>
-  <li><a href="index.php?m=typeDetails&t=<?php echo urlencode($type->getName()); ?>#methods">Methods</a></li>
-  <li class="current"><a href="#"><?php echo htmlentities($methodName); ?></a></li>
+  <li><a href="index.php#functions">Functions</a></li>
+  <li class="current"><a href="#"><?php echo htmlentities($funcName); ?></a></li>
 </ul>
 
-    <h2><?php echo htmlentities($methodName); ?> method</h2>
+    <h2><?php echo htmlentities($funcName); ?> method</h2>
     
-    <p><?php echo htmlentities($methodDesc); ?></p>
+    <p><?php echo htmlentities($funcDesc); ?></p>
     
     <h3>Syntax</h3>
     <pre><code class="php"><?php
     	$prefix = '';
-    	if ($method->isPublic()) {
-    		$prefix = 'public ';
-    	}
-    	else if ($method->isProtected()) {
-    		$prefix = 'protected ';
-    	}
-    	else if ($method->isPrivate()) {
-    		$prefix = 'private ';
-    	}
+
+    	$paramList = \phpLiveDoc\Helpers\ReflectionHelper::createParameterList($funcParams);
     	
-    	if ($method->isStatic()) {
-    		$prefix .= 'static ';
-    	}
-    	
-    	if ($method->isAbstract()) {
-    		$prefix .= 'abstract ';
-    	}
-    	
-    	$paramList = \phpLiveDoc\Helpers\ReflectionHelper::createParameterList($methodParams);
-    	
-echo $prefix; ?>function <?php echo htmlentities($methodName); ?>(<?php echo $paramList; ?>) {
+echo $prefix; ?>function <?php echo htmlentities($funcName); ?>(<?php echo $paramList; ?>) {
     // code...
 }
 </code></pre>
@@ -104,7 +73,7 @@ echo $prefix; ?>function <?php echo htmlentities($methodName); ?>(<?php echo $pa
 <?php
 
     
-    if (!empty($methodParams)) {
+    if (!empty($funcParams)) {
 ?>
     <table class="pdlFullWidth">
       <thead>
@@ -116,10 +85,10 @@ echo $prefix; ?>function <?php echo htmlentities($methodName); ?>(<?php echo $pa
       
       <tbody>
 <?php
-    	foreach ($methodParams as $p) {
+    	foreach ($funcParams as $p) {
     		$paramDesc = '';
     		
-    		$tags = $methodDoc->getTags();
+    		$tags = $funcDoc->getTags();
     		foreach ($tags as $tag) {
     			if (!$tag instanceof \phpDocumentor\Reflection\DocBlock\Tag\ParamTag) {
     				continue;
@@ -163,10 +132,8 @@ echo $prefix; ?>function <?php echo htmlentities($methodName); ?>(<?php echo $pa
 <?php
 	}
 	else {
-		?><div data-alert class="alert-box warning">Method not found!</div><?php
+		?><div data-alert class="alert-box warning">Function not found!</div><?php
 	}
 }
-else {
-	?><div data-alert class="alert-box warning">Type not found!</div><?php
-}
+
 

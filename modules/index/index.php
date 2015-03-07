@@ -74,6 +74,7 @@ else {
 
 ?>
 
+<a name="functions"></a>
 <h2>Functions</h2><?php
 $funcs = \phpLiveDoc\Services::getFuncs()
                              ->toArray();
@@ -95,7 +96,12 @@ if (!empty($funcs)) {
 	    ?>
 	    
 	    <tr>
-	      <td><?php echo htmlentities($f->getName()); ?></td>
+	      <td>
+	        <a href="index.php?m=funcDetails&f=<?php echo urlencode($f->getName()); ?>">
+	          <?php echo htmlentities($f->getName()); ?>
+	        </a>
+	      </td>
+	      
 	      <td><?php echo htmlentities($doc->getShortDescription()); ?></td>
 	    </tr>
 	    

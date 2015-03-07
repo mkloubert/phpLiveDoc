@@ -2,8 +2,11 @@
 
 /**
  * This is my first function.
+ * 
+ * @param array $a1 First argument 
+ * @param callable $a3 3rd one
  */
-function myFunc1() {
+function myFunc1(Iterator $i, IMyInterface $a4, array $a1 = array(), $a2 = null, $a3 = 'MK') {
 	
 }
 

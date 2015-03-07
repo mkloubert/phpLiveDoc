@@ -98,8 +98,9 @@ final class Services {
 	 */
 	public static function registerFunc($fn) {
 		$fn = trim($fn);
+		$i  = trim(strtolower($fn));
 	
-		return self::$_funcs[$fn] = new \ReflectionFunction($fn);
+		return self::$_funcs[$i] = new \ReflectionFunction($fn);
 	}
 	
 	/**
@@ -116,7 +117,25 @@ final class Services {
 	}
 	
 	/**
-	 * Tries to return a reflector object by name.
+	 * Tries to return a function reflector object by name.
+	 *
+	 * @param string $fn The name of the function.
+	 *
+	 * @return \ReflectionFunction The object or (null) if not found.
+	 */
+	public static function tryGetFunc($fn) {
+		$fn = trim($fn);
+		$i  = trim(strtolower($fn));
+		
+		if (isset(self::$_funcs[$i])) {
+			return self::$_funcs[$i];
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Tries to return a type reflector object by name.
 	 * 
 	 * @param string $tn The name of the type.
 	 * 
@@ -124,6 +143,7 @@ final class Services {
 	 */
 	public static function tryGetType($tn) {
 		$tn = trim($tn);
+		
 		if (isset(self::$_types[$tn])) {
 			return self::$_types[$tn];
 		}
