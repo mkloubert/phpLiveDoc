@@ -32,44 +32,44 @@ require PLD_DIR_MODULES . 'common_module_include.php';
 $types = \phpLiveDoc\Services::getTypes()
                              ->toArray();
 if (!empty($types)) {
-	?>
-	<table class="pdlFullWidth">
-	  <thead>
-	    <tr>
-	      <th>Name</th>
-	      <th>Description</th>
-	    </tr>
-	  </thead>
-	  
-	  <tbody>
-	    <?php
-	      foreach($types as $t) {
-	      	  $doc = new \phpDocumentor\Reflection\DocBlock($t->getDocComment());
-	      	  
-	    ?>
-	    
-	    <tr>
-	      <td>
-	        <a href="index.php?m=typeDetails&t=<?php echo urlencode($t->getName()); ?>">
-	          <?php echo htmlentities($t->getName()); ?>
-	        </a>
-	      </td>
-	      <td>
-	        <?php echo htmlentities($doc->getShortDescription()); ?>
-	      </td>
-	    </tr>
-	    
-	    <?php } ?>
-	  </tbody>
-	</table>
-	<?php
-	
-	unset($types);
+    ?>
+    <table class="pdlFullWidth">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        <?php
+          foreach($types as $t) {
+                $doc = new \phpDocumentor\Reflection\DocBlock($t->getDocComment());
+                
+        ?>
+        
+        <tr>
+          <td>
+            <a href="index.php?m=typeDetails&t=<?php echo urlencode($t->getName()); ?>">
+              <?php echo htmlentities($t->getName()); ?>
+            </a>
+          </td>
+          <td>
+            <?php echo htmlentities($doc->getShortDescription()); ?>
+          </td>
+        </tr>
+        
+        <?php } ?>
+      </tbody>
+    </table>
+    <?php
+    
+    unset($types);
 }
 else {
-	?>
+    ?>
 <div data-alert class="alert-box">No types defined.</div>
-	<?php
+    <?php
 }
 
 ?>
@@ -80,34 +80,34 @@ else {
 $constants = \phpLiveDoc\Services::getConstants()
                                  ->toArray();
 if (!empty($constants)) {
-	?>
-	<table class="pdlFullWidth">
-	  <thead>
-	    <tr>
-	      <th>Name</th>
-	      <th>Description</th>
-	    </tr>
-	  </thead>	
-	  
-	  <tbody>
-	<?php	
-	
-	foreach ($constants as $cn) {
-		?>
-		<tr>
-	      <td>
-	        <?php echo htmlentities($cn); ?>
-	      </td>
-	      
-	      <td>&nbsp;</td>
-	    </tr>
-		<?php
-	}
-	
-	?>
-	  </tbody>
-	</table>
-	<?php
+    ?>
+    <table class="pdlFullWidth">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>    
+      
+      <tbody>
+    <?php    
+    
+    foreach ($constants as $cn) {
+        ?>
+        <tr>
+          <td>
+            <?php echo htmlentities($cn); ?>
+          </td>
+          
+          <td>&nbsp;</td>
+        </tr>
+        <?php
+    }
+    
+    ?>
+      </tbody>
+    </table>
+    <?php
 }
 else {
 ?>
@@ -122,41 +122,41 @@ else {
 $funcs = \phpLiveDoc\Services::getFuncs()
                              ->toArray();
 if (!empty($funcs)) {
-	?>
-	<table class="pdlFullWidth">
-	  <thead>
-	    <tr>
-	      <th>Name</th>
-	      <th>Description</th>
-	    </tr>
-	  </thead>
-	  
-	  <tbody>
-	    <?php
-	      foreach($funcs as $f) {
-	      	  $doc = new \phpDocumentor\Reflection\DocBlock($f->getDocComment());
-	      	  
-	    ?>
-	    
-	    <tr>
-	      <td>
-	        <a href="index.php?m=funcDetails&f=<?php echo urlencode($f->getName()); ?>">
-	          <?php echo htmlentities($f->getName()); ?>
-	        </a>
-	      </td>
-	      
-	      <td><?php echo htmlentities($doc->getShortDescription()); ?></td>
-	    </tr>
-	    
-	    <?php } ?>
-	  </tbody>
-	</table>
-	<?php
-	
-	unset($funcs);
+    ?>
+    <table class="pdlFullWidth">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        <?php
+          foreach($funcs as $f) {
+                $doc = new \phpDocumentor\Reflection\DocBlock($f->getDocComment());
+                
+        ?>
+        
+        <tr>
+          <td>
+            <a href="index.php?m=funcDetails&f=<?php echo urlencode($f->getName()); ?>">
+              <?php echo htmlentities($f->getName()); ?>
+            </a>
+          </td>
+          
+          <td><?php echo htmlentities($doc->getShortDescription()); ?></td>
+        </tr>
+        
+        <?php } ?>
+      </tbody>
+    </table>
+    <?php
+    
+    unset($funcs);
 }
 else {
-	?>
+    ?>
 <div data-alert class="alert-box">No functions defined.</div>
-	<?php
+    <?php
 }

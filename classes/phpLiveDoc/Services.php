@@ -31,152 +31,152 @@ use \System\Collections\Generic\IEnumerable;
  * @author Marcel Joachim Kloubert <marcel.kloubert@gmx.net>
  */
 final class Services {
-	/**
-	 * @var array
-	 */
-	private static $_constants = array();
-	/**
-	 * @var array
-	 */
-	private static $_conf      = null;
-	/**
-	 * @var array
-	 */
-	private static $_funcs     = array();
-	/**
-	 * @var array
-	 */
-	private static $_types     = array();
-	
-	
-	private function __construct() {	
-	}
-	
-	
-	/**
-	 * Returns the app configuration.
-	 *
-	 * @return array The configuration data.
-	 */
-	public static function conf() {
-		if (is_null(self::$_conf)) {
-			$jsonReader = new \Zend\Config\Reader\Json();
-	
-			self::$_conf = $jsonReader->fromFile(sprintf('%s%s',
-							                             PLD_DIR_ROOT, 'config.json'));
-		}
-	
-		return self::$_conf;
-	}
-	
-	/**
-	 * Returns the list of registrated constants.
-	 * 
-	 * @return \System\Collections\Generic\IEnumerable The list of constants.
-	 */
-	public static function getConstants() {
-		return Enumerable::fromArray(self::$_constants)
-		                 ->orderBy(function($cn) {
-		                 	           return trim(strtolower($cn));
-		                           });
-	}
-	
-	/**
-	 * Returns the list of registrated functions.
-	 *
-	 * @return \System\Collections\Generic\IEnumerable The list of functions.
-	 */
-	public static function getFuncs() {
-		return Enumerable::fromArray(self::$_funcs)
-		                 ->orderBy(function(\ReflectionFunction $rf) {
-			                           return trim(strtolower($rf->getName()));
-		                           });
-	}
-	
-	/**
-	 * Returns the list of registrated classes.
-	 *
-	 * @return \System\Collections\Generic\IEnumerable The list of classes.
-	 */
-	public static function getTypes() {
-		return Enumerable::fromArray(self::$_types)
-		->orderBy(function(\ReflectionClass $rc) {
-			return trim(strtolower($rc->getName()));
-		});
-	}
-	
-	/**
-	 * Registers a constant.
-	 * 
-	 * @param string $cn The new of the constant.
-	 * 
-	 * @return string The name of the registrated constant.
-	 */
-	public static function registerConstant($cn) {
-		$cn = trim($cn);
-		
-		return self::$_constants[$cn] = $cn;
-	}
-	
-	/**
-	 * Registers a defined function.
-	 * 
-	 * @param string $fn The name of the function.
-	 * 
-	 * @return \ReflectionFunction The underlying reflection object.
-	 */
-	public static function registerFunc($fn) {
-		$fn = trim($fn);
-		$i  = trim(strtolower($fn));
-	
-		return self::$_funcs[$i] = new \ReflectionFunction($fn);
-	}
-	
-	/**
-	 * Registers a declared type (class or interface, e.g.).
-	 *
-	 * @param string $tn The name of the type.
-	 *
-	 * @return \ReflectionClass The underlying reflection object.
-	 */
-	public static function registerType($tn) {
-		$tn = trim($tn);
-	
-		return self::$_types[$tn] = new \ReflectionClass($tn);
-	}
-	
-	/**
-	 * Tries to return a function reflector object by name.
-	 *
-	 * @param string $fn The name of the function.
-	 *
-	 * @return \ReflectionFunction The object or (null) if not found.
-	 */
-	public static function tryGetFunc($fn) {
-		$fn = trim($fn);
-		$i  = trim(strtolower($fn));
-		
-		if (isset(self::$_funcs[$i])) {
-			return self::$_funcs[$i];
-		}
-		
-		return null;
-	}
-	
-	/**
-	 * Tries to return a type reflector object by name.
-	 * 
-	 * @param string $tn The name of the type.
-	 * 
-	 * @return \ReflectionClass The object or (null) if not found.
-	 */
-	public static function tryGetType($tn) {
-		$tn = trim($tn);
-		
-		if (isset(self::$_types[$tn])) {
-			return self::$_types[$tn];
-		}
-		
-		return null;
-	}
+    /**
+     * @var array
+     */
+    private static $_constants = array();
+    /**
+     * @var array
+     */
+    private static $_conf      = null;
+    /**
+     * @var array
+     */
+    private static $_funcs     = array();
+    /**
+     * @var array
+     */
+    private static $_types     = array();
+    
+    
+    private function __construct() {    
+    }
+    
+    
+    /**
+     * Returns the app configuration.
+     *
+     * @return array The configuration data.
+     */
+    public static function conf() {
+        if (is_null(self::$_conf)) {
+            $jsonReader = new \Zend\Config\Reader\Json();
+    
+            self::$_conf = $jsonReader->fromFile(sprintf('%s%s',
+                                                         PLD_DIR_ROOT, 'config.json'));
+        }
+    
+        return self::$_conf;
+    }
+    
+    /**
+     * Returns the list of registrated constants.
+     * 
+     * @return \System\Collections\Generic\IEnumerable The list of constants.
+     */
+    public static function getConstants() {
+        return Enumerable::fromArray(self::$_constants)
+                         ->orderBy(function($cn) {
+                                        return trim(strtolower($cn));
+                                   });
+    }
+    
+    /**
+     * Returns the list of registrated functions.
+     *
+     * @return \System\Collections\Generic\IEnumerable The list of functions.
+     */
+    public static function getFuncs() {
+        return Enumerable::fromArray(self::$_funcs)
+                         ->orderBy(function(\ReflectionFunction $rf) {
+                                       return trim(strtolower($rf->getName()));
+                                   });
+    }
+    
+    /**
+     * Returns the list of registrated classes.
+     *
+     * @return \System\Collections\Generic\IEnumerable The list of classes.
+     */
+    public static function getTypes() {
+        return Enumerable::fromArray(self::$_types)
+        ->orderBy(function(\ReflectionClass $rc) {
+            return trim(strtolower($rc->getName()));
+        });
+    }
+    
+    /**
+     * Registers a constant.
+     * 
+     * @param string $cn The new of the constant.
+     * 
+     * @return string The name of the registrated constant.
+     */
+    public static function registerConstant($cn) {
+        $cn = trim($cn);
+        
+        return self::$_constants[$cn] = $cn;
+    }
+    
+    /**
+     * Registers a defined function.
+     * 
+     * @param string $fn The name of the function.
+     * 
+     * @return \ReflectionFunction The underlying reflection object.
+     */
+    public static function registerFunc($fn) {
+        $fn = trim($fn);
+        $i  = trim(strtolower($fn));
+    
+        return self::$_funcs[$i] = new \ReflectionFunction($fn);
+    }
+    
+    /**
+     * Registers a declared type (class or interface, e.g.).
+     *
+     * @param string $tn The name of the type.
+     *
+     * @return \ReflectionClass The underlying reflection object.
+     */
+    public static function registerType($tn) {
+        $tn = trim($tn);
+    
+        return self::$_types[$tn] = new \ReflectionClass($tn);
+    }
+    
+    /**
+     * Tries to return a function reflector object by name.
+     *
+     * @param string $fn The name of the function.
+     *
+     * @return \ReflectionFunction The object or (null) if not found.
+     */
+    public static function tryGetFunc($fn) {
+        $fn = trim($fn);
+        $i  = trim(strtolower($fn));
+        
+        if (isset(self::$_funcs[$i])) {
+            return self::$_funcs[$i];
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Tries to return a type reflector object by name.
+     * 
+     * @param string $tn The name of the type.
+     * 
+     * @return \ReflectionClass The object or (null) if not found.
+     */
+    public static function tryGetType($tn) {
+        $tn = trim($tn);
+        
+        if (isset(self::$_types[$tn])) {
+            return self::$_types[$tn];
+        }
+        
+        return null;
+    }
 }

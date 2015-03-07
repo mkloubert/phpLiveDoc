@@ -28,12 +28,12 @@ namespace phpLiveDoc\Views;
  * @author Marcel Joachim Kloubert <marcel.kloubert@gmx.net>
  */
 class Renderer extends \Zend\View\Renderer\PhpRenderer {
-	/**
-	 * Initializes a new instance of that class.
-	 * 
-	 * @param array $config
-	 */
-	public function __construct($config = array()) {
-		parent::__construct($config);
-	}
+    /**
+     * Initializes a new instance of that class.
+     * 
+     * @param array $config
+     */
+    public function __construct($config = array()) {
+        parent::__construct($config);
+    }
 }

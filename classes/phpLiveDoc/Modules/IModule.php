@@ -30,11 +30,11 @@ use phpLiveDoc\IObject as TM_IObject;
  * @author Marcel Joachim Kloubert <marcel.kloubert@gmx.net>
  */
 interface IModule extends TM_IObject {
-	/**
-	 * Executes that module.
-	 * 
-	 * @return mixed The output of the module.
-	 */
+    /**
+     * Executes that module.
+     * 
+     * @return mixed The output of the module.
+     */
     function execute();
     
     /**

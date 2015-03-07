@@ -30,7 +30,7 @@ use phpLiveDoc\Object as TM_Object;
  * @author Marcel Joachim Kloubert <marcel.kloubert@gmx.net>
  */
 class Module extends TM_Object implements IModule {
-	private $_conf;
+    private $_conf;
     private $_name;
     
     
@@ -55,24 +55,24 @@ class Module extends TM_Object implements IModule {
      * @see \PDM\Modules\IModule::execute()
      */
     public function execute() {
-    	$result = false;
-    	
+        $result = false;
+        
         ob_start();
         try {
-        	// define a closure that allows to
-        	// define custom output value / object
-        	// 
-        	// $setResult('My custom content')
-        	$hasCustomResult = false;
-        	$setResult = function($res) use (&$result, &$hasCustomResult) {
-        		$result = $res;
-        		$hasCustomResult = true;
-        	};
-        	
+            // define a closure that allows to
+            // define custom output value / object
+            // 
+            // $setResult('My custom content')
+            $hasCustomResult = false;
+            $setResult = function($res) use (&$result, &$hasCustomResult) {
+                $result = $res;
+                $hasCustomResult = true;
+            };
+            
             require $this->getScriptPath();
             
             if (!$hasCustomResult) {
-            	$result = ob_get_contents();
+                $result = ob_get_contents();
             }
 
             ob_end_clean();
@@ -108,30 +108,30 @@ class Module extends TM_Object implements IModule {
      * @return array The config data of that module.
      */
     public function getConfig() {
-    	if (!is_array($this->_conf)) {
-    		$file = realpath(sprintf('%s%s%s%s',
-    				                 PLD_DIR_MODULES,
-    				                 $this->getName(),
-    				                 DIRECTORY_SEPARATOR,
-    				                 'config.json'));
-    		
-    		if (false !== $file) {
-    			$jsonReader = new \Zend\Config\Reader\Json();
-    			
-    			$this->_conf = $jsonReader->fromFile($file);
-    		}
-    		else {
-    			$this->_conf = array();
-    		}
-    	}
-    	
-    	return $this->_conf;
+        if (!is_array($this->_conf)) {
+            $file = realpath(sprintf('%s%s%s%s',
+                                     PLD_DIR_MODULES,
+                                     $this->getName(),
+                                     DIRECTORY_SEPARATOR,
+                                     'config.json'));
+            
+            if (false !== $file) {
+                $jsonReader = new \Zend\Config\Reader\Json();
+                
+                $this->_conf = $jsonReader->fromFile($file);
+            }
+            else {
+                $this->_conf = array();
+            }
+        }
+        
+        return $this->_conf;
     }
     
     /**
      * Returns a module safe, what means that if no module with a
-	 * specific name exists, an instance with the default module is
-	 * returned.
+     * specific name exists, an instance with the default module is
+     * returned.
      * 
      * @param string $name The name of the module.
      * 
@@ -159,10 +159,10 @@ class Module extends TM_Object implements IModule {
      * @return string The root directory of that module.
      */
     public function getPath() {
-    	return static::getModulePathByName($this->getName());
+        return static::getModulePathByName($this->getName());
     }
     
-	/**
+    /**
      * Gets the root directory of a module by its name.
      * 
      * @param string $name The name of the module.
@@ -171,13 +171,13 @@ class Module extends TM_Object implements IModule {
      *                if an error occured.
      */
     public static function getPathByName($name) {
-    	$name = static::normalizeName($name);
-    	if (empty($name)) {
-    		// invalid name
-    		return false;
-    	}
-    	 
-    	return PLD_DIR_MODULES . $name . DIRECTORY_SEPARATOR;
+        $name = static::normalizeName($name);
+        if (empty($name)) {
+            // invalid name
+            return false;
+        }
+         
+        return PLD_DIR_MODULES . $name . DIRECTORY_SEPARATOR;
     }
     
     /**
@@ -195,12 +195,12 @@ class Module extends TM_Object implements IModule {
      * @param string $name The name of the module.
      * 
      * @return boolean|string The script path of the module or
-     * 						  (false) if name is invalid.
+     *                           (false) if name is invalid.
      */
     protected static function getScriptPathByName($name) {
         $dir = static::getPathByName($name);
         if (empty($dir)) {
-        	// invalid directory
+            // invalid directory
             return false;
         }
         

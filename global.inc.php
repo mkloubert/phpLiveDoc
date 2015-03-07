@@ -41,8 +41,8 @@ set_include_path(get_include_path() . PATH_SEPARATOR
  * @param string $clsName The name of the class to load.
  */
 function __autoload($clsName) {
-	require_once sprintf('%s%s%s',
-			             PLD_DIR_CLASSES,
-			             str_ireplace('\\', DIRECTORY_SEPARATOR, $clsName),
-			             '.php');
+    require_once sprintf('%s%s%s',
+                         PLD_DIR_CLASSES,
+                         str_ireplace('\\', DIRECTORY_SEPARATOR, $clsName),
+                         '.php');
 }

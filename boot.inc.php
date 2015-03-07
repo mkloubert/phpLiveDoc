@@ -29,112 +29,112 @@ $conf = \phpLiveDoc\Services::conf();
 
 // load functions
 if (isset($conf['functions'])) {
-	$getDefinedFuncs = function() {
-		$df = get_defined_functions();
-		$result = array_merge($df['internal'], $df['user']);      
-		
-		unset($df);
-		return $result;
-	};
-	
-	$prevLoadedFuncs = $getDefinedFuncs();
-	
-	foreach ($conf['functions'] as $entry) {
-		if (!isset($entry['source'])) {
-			continue;
-		}
-		
-		switch (trim(strtolower($entry['source']))) {
-			case 'include_file':
-				if (isset($entry['path'])) {
-					require_once realpath($entry['path']);
-				}
-				break;
-		}
-		
-		$loadedFuncs = $getDefinedFuncs();
+    $getDefinedFuncs = function() {
+        $df = get_defined_functions();
+        $result = array_merge($df['internal'], $df['user']);      
+        
+        unset($df);
+        return $result;
+    };
+    
+    $prevLoadedFuncs = $getDefinedFuncs();
+    
+    foreach ($conf['functions'] as $entry) {
+        if (!isset($entry['source'])) {
+            continue;
+        }
+        
+        switch (trim(strtolower($entry['source']))) {
+            case 'include_file':
+                if (isset($entry['path'])) {
+                    require_once realpath($entry['path']);
+                }
+                break;
+        }
+        
+        $loadedFuncs = $getDefinedFuncs();
 
-		$diffLoadedFuncs = array_diff($loadedFuncs, $prevLoadedFuncs);
+        $diffLoadedFuncs = array_diff($loadedFuncs, $prevLoadedFuncs);
 
-		foreach ($diffLoadedFuncs as $funcName) {
-			\phpLiveDoc\Services::registerFunc($funcName);
-		}
-		
-		$prevLoadedFuncs = $loadedFuncs;
-		unset($loadedFuncs);
-	}
-	
-	unset($prevLoadedFuncs);
+        foreach ($diffLoadedFuncs as $funcName) {
+            \phpLiveDoc\Services::registerFunc($funcName);
+        }
+        
+        $prevLoadedFuncs = $loadedFuncs;
+        unset($loadedFuncs);
+    }
+    
+    unset($prevLoadedFuncs);
 }
 
 // load classes
 if (isset($conf['classes'])) {
-	$getDeclaredTypes = function() {
-		return array_merge(get_declared_classes(),
-				           get_declared_interfaces());
-	};
-	
-	$prevLoadedClasses = $getDeclaredTypes();
-	
-	foreach ($conf['classes'] as $entry) {
-		if (!isset($entry['source'])) {
-			continue;
-		}
-		
-	    switch (trim(strtolower($entry['source']))) {
-			case 'include_file':
-				if (isset($entry['path'])) {
-					require_once realpath($entry['path']);
-				}
-				break;
-		}
-		
-		$loadedClasses     = $getDeclaredTypes();
-		$diffLoadedClasses = array_diff($loadedClasses, $prevLoadedClasses);
-		
-		foreach ($diffLoadedClasses as $typeName) {
-			\phpLiveDoc\Services::registerType($typeName);
-		}
-		
-		$prevLoadedClasses = $loadedClasses;
-		unset($loadedClasses);
-	}
-	
-	unset($prevLoadedClasses);
+    $getDeclaredTypes = function() {
+        return array_merge(get_declared_classes(),
+                           get_declared_interfaces());
+    };
+    
+    $prevLoadedClasses = $getDeclaredTypes();
+    
+    foreach ($conf['classes'] as $entry) {
+        if (!isset($entry['source'])) {
+            continue;
+        }
+        
+        switch (trim(strtolower($entry['source']))) {
+            case 'include_file':
+                if (isset($entry['path'])) {
+                    require_once realpath($entry['path']);
+                }
+                break;
+        }
+        
+        $loadedClasses     = $getDeclaredTypes();
+        $diffLoadedClasses = array_diff($loadedClasses, $prevLoadedClasses);
+        
+        foreach ($diffLoadedClasses as $typeName) {
+            \phpLiveDoc\Services::registerType($typeName);
+        }
+        
+        $prevLoadedClasses = $loadedClasses;
+        unset($loadedClasses);
+    }
+    
+    unset($prevLoadedClasses);
 }
 
 // load constants
 if (isset($conf['constants'])) {
-	$getDefinedConstants = function() {
-		return array_keys(get_defined_constants());
-	};
-	
-	$prevLoadedConstants = $getDefinedConstants();
-	
-	foreach ($conf['constants'] as $entry) {
-		if (!isset($entry['source'])) {
-			continue;
-		}
-		
-		switch (trim(strtolower($entry['source']))) {
-			case 'include_file':
-				if (isset($entry['path'])) {
-					require_once realpath($entry['path']);
-				}
-				break;
-		}
-		
-		$loadedConstants     = $getDefinedConstants();
-		$diffLoadedConstants = array_diff($loadedConstants, $prevLoadedConstants);
+    $getDefinedConstants = function() {
+        return array_keys(get_defined_constants());
+    };
+    
+    $prevLoadedConstants = $getDefinedConstants();
+    
+    foreach ($conf['constants'] as $entry) {
+        if (!isset($entry['source'])) {
+            continue;
+        }
+        
+        switch (trim(strtolower($entry['source']))) {
+            case 'include_file':
+                if (isset($entry['path'])) {
+                    require_once realpath($entry['path']);
+                }
+                break;
+        }
+        
+        $loadedConstants     = $getDefinedConstants();
+        $diffLoadedConstants = array_diff($loadedConstants, $prevLoadedConstants);
 
-		foreach ($diffLoadedConstants as $constName) {
-			\phpLiveDoc\Services::registerConstant($constName);
-		}
-		
-		$prevLoadedClasses = $loadedConstants;
-		unset($diffLoadedConstants);
-	}
-	
-	unset($prevLoadedConstants);
+        foreach ($diffLoadedConstants as $constName) {
+            \phpLiveDoc\Services::registerConstant($constName);
+        }
+        
+        $prevLoadedClasses = $loadedConstants;
+        unset($diffLoadedConstants);
+    }
+    
+    unset($prevLoadedConstants);
 }
 

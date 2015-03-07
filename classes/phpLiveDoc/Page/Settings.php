@@ -28,21 +28,21 @@ namespace phpLiveDoc\Page;
  * @author Marcel Joachim Kloubert <marcel.kloubert@gmx.net>
  */
 final class Settings {
-	/**
-	 * Stores the page title.
-	 * 
-	 * @var string
-	 */
-	public static $Title = null;
-	
-	/**
-	 * Stores the name of the view to output.
-	 * 
-	 * @var string
-	 */
-	public static $View = 'main';
-	
-	
-	private function __construct() {
-	}
+    /**
+     * Stores the page title.
+     * 
+     * @var string
+     */
+    public static $Title = null;
+    
+    /**
+     * Stores the name of the view to output.
+     * 
+     * @var string
+     */
+    public static $View = 'main';
+    
+    
+    private function __construct() {
+    }
 }

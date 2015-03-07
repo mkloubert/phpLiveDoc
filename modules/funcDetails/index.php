@@ -25,21 +25,21 @@ use System\Linq\Enumerable;
 
 $func = null;
 if (isset($_REQUEST['f'])) {
-	$funcName = trim($_REQUEST['f']);
-	if (!empty($funcName)) {
-		$func = \phpLiveDoc\Services::tryGetFunc($funcName);
-	}
+    $funcName = trim($_REQUEST['f']);
+    if (!empty($funcName)) {
+        $func = \phpLiveDoc\Services::tryGetFunc($funcName);
+    }
 }
 
 //
 {
-	if ($func instanceof \ReflectionFunction) {
-		$funcDoc = new \phpDocumentor\Reflection\DocBlock($func->getDocComment());
-		
-		$funcName   = $func->getName();
-		$funcDesc   = $funcDoc->getText();
-		$funcParams = $func->getParameters();
-		
+    if ($func instanceof \ReflectionFunction) {
+        $funcDoc = new \phpDocumentor\Reflection\DocBlock($func->getDocComment());
+        
+        $funcName   = $func->getName();
+        $funcDesc   = $funcDoc->getText();
+        $funcParams = $func->getParameters();
+        
 ?>
 
 <style type="text/css">
@@ -60,16 +60,16 @@ if (isset($_REQUEST['f'])) {
     
     <h3>Syntax</h3>
     <pre><code class="php"><?php
-    	$prefix = '';
+        $prefix = '';
 
-    	$paramList = \phpLiveDoc\Helpers\ReflectionHelper::createParameterList($funcParams);
-    	
+        $paramList = \phpLiveDoc\Helpers\ReflectionHelper::createParameterList($funcParams);
+        
 echo $prefix; ?>function <?php echo htmlentities($funcName); ?>(<?php echo $paramList; ?>) {
     // code...
 }
 </code></pre>
 
-	<h3>Parameters</h3>
+    <h3>Parameters</h3>
 <?php
 
     
@@ -85,55 +85,55 @@ echo $prefix; ?>function <?php echo htmlentities($funcName); ?>(<?php echo $para
       
       <tbody>
 <?php
-    	foreach ($funcParams as $p) {
-    		$paramDesc = '';
-    		
-    		$tags = $funcDoc->getTags();
-    		foreach ($tags as $tag) {
-    			if (!$tag instanceof \phpDocumentor\Reflection\DocBlock\Tag\ParamTag) {
-    				continue;
-    			}
-    			
-    			if ($tag->getVariableName() != ('$' . $p->getName())) {
-    				continue;
-    			}
-    			
-    			$paramDesc = $tag->getDescription();
-    		}
-    		
-    		$paramPrefix = '';
-    		$paramSuffix = '';
-    		if ($p->isOptional()) {
-    			$paramPrefix = '[';
-    			$paramSuffix = ']';
-    		}
+        foreach ($funcParams as $p) {
+            $paramDesc = '';
+            
+            $tags = $funcDoc->getTags();
+            foreach ($tags as $tag) {
+                if (!$tag instanceof \phpDocumentor\Reflection\DocBlock\Tag\ParamTag) {
+                    continue;
+                }
+                
+                if ($tag->getVariableName() != ('$' . $p->getName())) {
+                    continue;
+                }
+                
+                $paramDesc = $tag->getDescription();
+            }
+            
+            $paramPrefix = '';
+            $paramSuffix = '';
+            if ($p->isOptional()) {
+                $paramPrefix = '[';
+                $paramSuffix = ']';
+            }
 
-    		?>
-    		<tr>
+            ?>
+            <tr>
               <td><?php echo htmlentities(sprintf('%s$%s%s',
-              		                              $paramPrefix,
-              		                              $p->getName(), 
-              		                              $paramSuffix)); ?></td>
+                                                    $paramPrefix,
+                                                    $p->getName(), 
+                                                    $paramSuffix)); ?></td>
               <td><?php echo htmlentities($paramDesc); ?></td>
             </tr>
-    		<?php
-    	}
-    	
+            <?php
+        }
+        
 ?>
       </tbody>
 <?php
     }
     else {
-    	?><div data-alert class="alert-box secondary">No parameters found.</div><?php
+        ?><div data-alert class="alert-box secondary">No parameters found.</div><?php
     }
 
 ?>
 
 <?php
-	}
-	else {
-		?><div data-alert class="alert-box warning">Function not found!</div><?php
-	}
+    }
+    else {
+        ?><div data-alert class="alert-box warning">Function not found!</div><?php
+    }
 }
 
 

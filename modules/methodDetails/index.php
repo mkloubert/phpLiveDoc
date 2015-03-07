@@ -25,33 +25,33 @@ use System\Linq\Enumerable;
 
 $type = null;
 if (isset($_REQUEST['t'])) {
-	$typeName = trim($_REQUEST['t']);
-	if (!empty($typeName)) {
-		$type = \phpLiveDoc\Services::tryGetType($typeName);
-	}
+    $typeName = trim($_REQUEST['t']);
+    if (!empty($typeName)) {
+        $type = \phpLiveDoc\Services::tryGetType($typeName);
+    }
 }
 
 if ($type instanceof \ReflectionClass) {
-	$method = null;
-	if (isset($_REQUEST['tm'])) {
-		$methodName = trim($_REQUEST['tm']);
-		if (!empty($methodName)) {
-			try {
-				$method = $type->getMethod($methodName);
-			}
-			catch (\ReflectionException $ex) {
-				$method = null;
-			}
-		}
-	}
-	
-	if ($method instanceof \ReflectionMethod) {
-		$methodDoc = new \phpDocumentor\Reflection\DocBlock($method->getDocComment());
-		
-		$methodName   = $method->getName();
-		$methodDesc   = $methodDoc->getText();
-		$methodParams = $method->getParameters();
-		
+    $method = null;
+    if (isset($_REQUEST['tm'])) {
+        $methodName = trim($_REQUEST['tm']);
+        if (!empty($methodName)) {
+            try {
+                $method = $type->getMethod($methodName);
+            }
+            catch (\ReflectionException $ex) {
+                $method = null;
+            }
+        }
+    }
+    
+    if ($method instanceof \ReflectionMethod) {
+        $methodDoc = new \phpDocumentor\Reflection\DocBlock($method->getDocComment());
+        
+        $methodName   = $method->getName();
+        $methodDesc   = $methodDoc->getText();
+        $methodParams = $method->getParameters();
+        
 ?>
 
 <style type="text/css">
@@ -74,33 +74,33 @@ if ($type instanceof \ReflectionClass) {
     
     <h3>Syntax</h3>
     <pre><code class="php"><?php
-    	$prefix = '';
-    	if ($method->isPublic()) {
-    		$prefix = 'public ';
-    	}
-    	else if ($method->isProtected()) {
-    		$prefix = 'protected ';
-    	}
-    	else if ($method->isPrivate()) {
-    		$prefix = 'private ';
-    	}
-    	
-    	if ($method->isStatic()) {
-    		$prefix .= 'static ';
-    	}
-    	
-    	if ($method->isAbstract()) {
-    		$prefix .= 'abstract ';
-    	}
-    	
-    	$paramList = \phpLiveDoc\Helpers\ReflectionHelper::createParameterList($methodParams);
-    	
+        $prefix = '';
+        if ($method->isPublic()) {
+            $prefix = 'public ';
+        }
+        else if ($method->isProtected()) {
+            $prefix = 'protected ';
+        }
+        else if ($method->isPrivate()) {
+            $prefix = 'private ';
+        }
+        
+        if ($method->isStatic()) {
+            $prefix .= 'static ';
+        }
+        
+        if ($method->isAbstract()) {
+            $prefix .= 'abstract ';
+        }
+        
+        $paramList = \phpLiveDoc\Helpers\ReflectionHelper::createParameterList($methodParams);
+        
 echo $prefix; ?>function <?php echo htmlentities($methodName); ?>(<?php echo $paramList; ?>) {
     // code...
 }
 </code></pre>
 
-	<h3>Parameters</h3>
+    <h3>Parameters</h3>
 <?php
 
     
@@ -116,57 +116,57 @@ echo $prefix; ?>function <?php echo htmlentities($methodName); ?>(<?php echo $pa
       
       <tbody>
 <?php
-    	foreach ($methodParams as $p) {
-    		$paramDesc = '';
-    		
-    		$tags = $methodDoc->getTags();
-    		foreach ($tags as $tag) {
-    			if (!$tag instanceof \phpDocumentor\Reflection\DocBlock\Tag\ParamTag) {
-    				continue;
-    			}
-    			
-    			if ($tag->getVariableName() != ('$' . $p->getName())) {
-    				continue;
-    			}
-    			
-    			$paramDesc = $tag->getDescription();
-    		}
-    		
-    		$paramPrefix = '';
-    		$paramSuffix = '';
-    		if ($p->isOptional()) {
-    			$paramPrefix = '[';
-    			$paramSuffix = ']';
-    		}
+        foreach ($methodParams as $p) {
+            $paramDesc = '';
+            
+            $tags = $methodDoc->getTags();
+            foreach ($tags as $tag) {
+                if (!$tag instanceof \phpDocumentor\Reflection\DocBlock\Tag\ParamTag) {
+                    continue;
+                }
+                
+                if ($tag->getVariableName() != ('$' . $p->getName())) {
+                    continue;
+                }
+                
+                $paramDesc = $tag->getDescription();
+            }
+            
+            $paramPrefix = '';
+            $paramSuffix = '';
+            if ($p->isOptional()) {
+                $paramPrefix = '[';
+                $paramSuffix = ']';
+            }
 
-    		?>
-    		<tr>
+            ?>
+            <tr>
               <td><?php echo htmlentities(sprintf('%s$%s%s',
-              		                              $paramPrefix,
-              		                              $p->getName(), 
-              		                              $paramSuffix)); ?></td>
+                                                    $paramPrefix,
+                                                    $p->getName(), 
+                                                    $paramSuffix)); ?></td>
               <td><?php echo htmlentities($paramDesc); ?></td>
             </tr>
-    		<?php
-    	}
-    	
+            <?php
+        }
+        
 ?>
       </tbody>
 <?php
     }
     else {
-    	?><div data-alert class="alert-box secondary">No parameters found.</div><?php
+        ?><div data-alert class="alert-box secondary">No parameters found.</div><?php
     }
 
 ?>
 
 <?php
-	}
-	else {
-		?><div data-alert class="alert-box warning">Method not found!</div><?php
-	}
+    }
+    else {
+        ?><div data-alert class="alert-box warning">Method not found!</div><?php
+    }
 }
 else {
-	?><div data-alert class="alert-box warning">Type not found!</div><?php
+    ?><div data-alert class="alert-box warning">Type not found!</div><?php
 }
 

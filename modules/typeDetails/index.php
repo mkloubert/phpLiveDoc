@@ -25,42 +25,42 @@ use System\Linq\Enumerable;
 
 $type = null;
 if (isset($_REQUEST['t'])) {
-	$typeName = trim($_REQUEST['t']);
-	if (!empty($typeName)) {
-		$type = \phpLiveDoc\Services::tryGetType($typeName);
-	}
+    $typeName = trim($_REQUEST['t']);
+    if (!empty($typeName)) {
+        $type = \phpLiveDoc\Services::tryGetType($typeName);
+    }
 }
 
 $typeDoc = null;
 if ($type instanceof \ReflectionClass) {
-	$typeDoc = new \phpDocumentor\Reflection\DocBlock($type->getDocComment());
+    $typeDoc = new \phpDocumentor\Reflection\DocBlock($type->getDocComment());
 }
 
 $getNameOfReflectorItem = function($r) {
-	return $r->getName();
+    return $r->getName();
 };
 
 $typeLinkOrString = function($type) {
-	$result = $type;
-	
-	$typeLink = \phpLiveDoc\Helpers\ReflectionHelper::tryGetLinkUrlFromType($type);
-	if (!is_null($typeLink)) {
-		$result = sprintf('<a href="%s" target="_blank">%s</a>',
-				          $typeLink,
-				          $type);
-	}
-	
-	return $result;
+    $result = $type;
+    
+    $typeLink = \phpLiveDoc\Helpers\ReflectionHelper::tryGetLinkUrlFromType($type);
+    if (!is_null($typeLink)) {
+        $result = sprintf('<a href="%s" target="_blank">%s</a>',
+                          $typeLink,
+                          $type);
+    }
+    
+    return $result;
 };
 
 $getNameOfReflectorItemWithLink = function($r) use ($getNameOfReflectorItem, $typeLinkOrString) {
-	$result = $getNameOfReflectorItem($r);
-	
-	return $typeLinkOrString($result);
+    $result = $getNameOfReflectorItem($r);
+    
+    return $typeLinkOrString($result);
 };
 
 $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
-	return trim(strtolower($getNameOfReflectorItem($r)));
+    return trim(strtolower($getNameOfReflectorItem($r)));
 };
 
 ?>
@@ -73,20 +73,20 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
 
 <?php
     if ($typeDoc instanceof \phpDocumentor\Reflection\DocBlock) {
-    	$typeName = $type->getName();
-    	$typeDesc = $typeDoc->getText();
-    	
-    	$kindOfType = 'class';
-    	if ($type->isInterface()) {
-    		$kindOfType = 'interface';
-    	}
-    	
+        $typeName = $type->getName();
+        $typeDesc = $typeDoc->getText();
+        
+        $kindOfType = 'class';
+        if ($type->isInterface()) {
+            $kindOfType = 'interface';
+        }
+        
 ?>
-	<ul class="breadcrumbs">
-	  <li><a href="index.php">Home</a></li>
-	  <li><a href="index.php#classesAndInterfaces">Classes and interfaces</a></li>
-	  <li class="current"><a href="#"><?php echo htmlentities($type->getName()); ?></a></li>
-	</ul>
+    <ul class="breadcrumbs">
+      <li><a href="index.php">Home</a></li>
+      <li><a href="index.php#classesAndInterfaces">Classes and interfaces</a></li>
+      <li class="current"><a href="#"><?php echo htmlentities($type->getName()); ?></a></li>
+    </ul>
 
     <h2><?php echo htmlentities($typeName); ?> <?php echo htmlentities($kindOfType); ?></h2>
     
@@ -98,43 +98,43 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
     $prefix = '';
     $suffix = '';
     if ($type->isInterface()) {
-    	// interface
-    	
+        // interface
+        
         $interfaces = Enumerable::fromArray($type->getInterfaces())
                                 ->orderBy($getNameOfReflectorItemForSort)
                                 ->toArray();
                                           
         if (!empty($interfaces)) {
-        	$suffix .= ' extends ' . Enumerable::fromArray($interfaces)
-        	                                   ->select($getNameOfReflectorItemWithLink)
-        	                                   ->stringJoin(', ');
+            $suffix .= ' extends ' . Enumerable::fromArray($interfaces)
+                                               ->select($getNameOfReflectorItemWithLink)
+                                               ->stringJoin(', ');
         }
     }
     else {
-    	// class
-    	
-    	$parent = $type->getParentClass();
-    	if ($parent instanceof \ReflectionClass) {
-    		$suffix .= ' extends ' . $typeLinkOrString($parent->getName());
-    	}
-    	
-    	$interfaces = Enumerable::fromArray($type->getInterfaces())
-    	                        ->orderBy($getNameOfReflectorItemForSort)
-    	                        ->toArray();
-    	  	
+        // class
+        
+        $parent = $type->getParentClass();
+        if ($parent instanceof \ReflectionClass) {
+            $suffix .= ' extends ' . $typeLinkOrString($parent->getName());
+        }
+        
+        $interfaces = Enumerable::fromArray($type->getInterfaces())
+                                ->orderBy($getNameOfReflectorItemForSort)
+                                ->toArray();
+              
         if (!empty($interfaces)) {
-        	$suffix .= ' implements ' . Enumerable::fromArray($interfaces)
-        	                                      ->select($getNameOfReflectorItemWithLink)
-        	                                      ->stringJoin(', ');
+            $suffix .= ' implements ' . Enumerable::fromArray($interfaces)
+                                                  ->select($getNameOfReflectorItemWithLink)
+                                                  ->stringJoin(', ');
         }
     }
     
     if ($type->isFinal()) {
-    	$prefix = 'final ';
+        $prefix = 'final ';
     }
     
     if ($type->isAbstract()) {
-    	$prefix = 'abstract ';
+        $prefix = 'abstract ';
     }
 
 ?><?php echo $prefix; ?><?php echo htmlentities($kindOfType); ?> <?php echo htmlentities($typeName); ?><?php echo $suffix; ?> {
@@ -152,40 +152,40 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
     
     $methods = $type->getMethods();
     if (!empty($methods)) {
-    	?>
-    	  <table class="pdlFullWidth">
-    		<thead>
-    		  <tr>
-    		    <th>Name</th>
-    		    <th>Description</th>
-    		  </tr>
-    		</thead>
-    		  
-    		<tbody>
-    		  <?php
-    		    foreach(Enumerable::fromArray($methods)
-    		    		          ->orderBy($getNameOfReflectorItemForSort) as $m) {
+        ?>
+          <table class="pdlFullWidth">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+              
+            <tbody>
+              <?php
+                foreach(Enumerable::fromArray($methods)
+                                  ->orderBy($getNameOfReflectorItemForSort) as $m) {
 
-    		        $methodDoc = new \phpDocumentor\Reflection\DocBlock($m->getDocComment());
-    		      	  
-    		  ?>
-    		    
-    		  <tr>
-    		    <td>
-    		      <a href="index.php?m=methodDetails&t=<?php echo urlencode($typeName); ?>&tm=<?php echo urlencode($m->getName()); ?>">
-    		        <?php echo htmlentities($m->getName()); ?>
-    		      </a>
-    		    </td>
-    		    <td><?php echo htmlentities($methodDoc->getShortDescription()); ?></td>
-    		  </tr>
-    		    
-    		  <?php } ?>
-    		  </tbody>
-    		</table>
+                    $methodDoc = new \phpDocumentor\Reflection\DocBlock($m->getDocComment());
+                        
+              ?>
+                
+              <tr>
+                <td>
+                  <a href="index.php?m=methodDetails&t=<?php echo urlencode($typeName); ?>&tm=<?php echo urlencode($m->getName()); ?>">
+                    <?php echo htmlentities($m->getName()); ?>
+                  </a>
+                </td>
+                <td><?php echo htmlentities($methodDoc->getShortDescription()); ?></td>
+              </tr>
+                
+              <?php } ?>
+              </tbody>
+            </table>
         <?php
     }
     else {
-    	?><div data-alert class="alert-box secondary">No methods found.</div><?php
+        ?><div data-alert class="alert-box secondary">No methods found.</div><?php
     }
     
     ?>

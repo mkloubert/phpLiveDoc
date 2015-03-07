@@ -28,35 +28,35 @@ require_once './global.inc.php';
 require_once './boot.inc.php';
 
 try {
-	// get module name
-	$moduleName = null;
-	if (isset($_REQUEST['m'])) {
-		$moduleName = $_REQUEST['m'];
-	}
-	
-	// get module instance
-	$module = \phpLiveDoc\Modules\Module::getModuleSafe($moduleName);
-	
-	// execute
-	$output = $module->execute();
-	if (!$output instanceof \Exception) {
-		// output result of module
-		{
-			$view = new \phpLiveDoc\Views\SimpleView();
-			 
-			// set vars
-			$view->content = $output;
-			$view->title   = \phpLiveDoc\Page\Settings::$Title;
-			 
-			$view->renderAndOutput(\phpLiveDoc\Page\Settings::$View);
-		}
-	}
-	else {
-		throw $output;
-	}
+    // get module name
+    $moduleName = null;
+    if (isset($_REQUEST['m'])) {
+        $moduleName = $_REQUEST['m'];
+    }
+    
+    // get module instance
+    $module = \phpLiveDoc\Modules\Module::getModuleSafe($moduleName);
+    
+    // execute
+    $output = $module->execute();
+    if (!$output instanceof \Exception) {
+        // output result of module
+        {
+            $view = new \phpLiveDoc\Views\SimpleView();
+             
+            // set vars
+            $view->content = $output;
+            $view->title   = \phpLiveDoc\Page\Settings::$Title;
+             
+            $view->renderAndOutput(\phpLiveDoc\Page\Settings::$View);
+        }
+    }
+    else {
+        throw $output;
+    }
 }
 catch (\Exception $e) {
-	die($e);
+    die($e);
 }
 
 require_once './shutdown.inc.php';
