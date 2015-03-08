@@ -48,7 +48,7 @@ $outputNamespace = function($r) {
     if (!empty($ns)) {
         ?>
         <br />
-        <sub>declared in <a href="index.php?ns=<?php echo urlencode($ns); ?>"><?php echo htmlentities($ns); ?></a></sub>
+        <sub>declared in <a href="index.php?ns=<?php echo urlencode($ns); ?>" target="_blank"><?php echo htmlentities($ns); ?></a></sub>
         <?php
     }
 };
