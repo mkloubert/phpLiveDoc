@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<examples>
+  <example title="this is a small example">
+    <code title="The PHP part"><source><![CDATA[
+function testFunc() {
+};
+
+// does a call of my first function
+$res = myFunc1();
+]]></source></code>
+
+    <code lang="html"><source><![CDATA[
+<html>
+</html>
+]]></source></code>
+
+  <code lang="js" title="This is javascript code."><source><![CDATA[
+$(document).ready(function() {
+    alert(1);
+});
+]]></source></code>
+  </example>
+  
+  <example>
+    <code>
+      <source><![CDATA[
+echo "Hello, world!";
+]]></source>
+    </code>
+  </example>
+</examples>

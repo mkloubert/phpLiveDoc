@@ -75,6 +75,13 @@ echo $prefix; ?>function <?php echo htmlentities($funcName); ?>(<?php echo $para
 }
 </code></pre>
 
+    <?php 
+    
+    $examples = \phpLiveDoc\Examples\Example::fromFunc($funcName);
+    \phpLiveDoc\Helpers\DocumentationHelper::outputExamples($examples);
+    
+    ?>
+
     <h3>Parameters</h3>
 <?php
 

@@ -55,34 +55,51 @@ class Module extends TM_Object implements IModule {
      * @see \phpLiveDoc\Modules\IModule::execute()
      */
     public function execute() {
-        $result = false;
+        $module = $this;
         
         ob_start();
-        try {
-            // define a closure that allows to
-            // define custom output value / object
-            // 
-            // $setResult('My custom content')
-            $hasCustomResult = false;
-            $setResult = function($res) use (&$result, &$hasCustomResult) {
-                $result = $res;
-                $hasCustomResult = true;
-            };
+        
+        // needs to be wrapped because otherwise
+        // module script can leave that method
+        // by own
+        $executeScript = function() use ($module) {
+            $moduleResult            = new \stdClass();
+            $moduleResult->hasFailed = false;
             
-            require $this->getScriptPath();
-            
-            if (!$hasCustomResult) {
-                $result = ob_get_contents();
+            try {
+                $setResult = function($newRes) use (&$moduleResult) {
+                    $moduleResult->hasCustomResult = true;
+                    $moduleResult->result          = $newRes;
+                };
+                
+                $resetCustomResult = function() use (&$moduleResult) {
+                    $moduleResult->hasCustomResult = false;
+                    $moduleResult->result          = null;
+                };
+                
+                $resetCustomResult();
+                require $module->getScriptPath();
             }
-
-            ob_end_clean();
+            catch (\Exception $ex) {
+                $moduleResult->hasFailed = true;
+                $moduleResult->result    = $ex;
+            }
+             
+            return $moduleResult;
+        };
+        
+        $result = null;
+        
+        $executionResult = $executeScript();
+        if (!$executionResult->hasCustomResult) {
+            $result = ob_get_contents();
         }
-        catch (\Exception $e) {
-            ob_end_clean();
-            
-            $result = $e;
+        else {
+            $result = $executionResult->result;
         }
         
+        ob_end_clean();
+
         return $result;
     }
     

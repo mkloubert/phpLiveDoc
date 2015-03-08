@@ -24,10 +24,11 @@ defined('PLD_INDEX') or die();
 define('PLD_GLOBAL', true, false);
 
 
-define('PLD_DIR_ROOT'   , '.' . DIRECTORY_SEPARATOR                     , false);
-define('PLD_DIR_CLASSES', PLD_DIR_ROOT . 'classes' . DIRECTORY_SEPARATOR, false);
-define('PLD_DIR_MODULES', PLD_DIR_ROOT . 'modules' . DIRECTORY_SEPARATOR, false);
-define('PLD_DIR_VIEWS'  , PLD_DIR_ROOT . 'views' . DIRECTORY_SEPARATOR  , false);
+define('PLD_DIR_ROOT'    , '.' . DIRECTORY_SEPARATOR                      , false);
+define('PLD_DIR_CLASSES' , PLD_DIR_ROOT . 'classes'  . DIRECTORY_SEPARATOR, false);
+define('PLD_DIR_EXAMPLES', PLD_DIR_ROOT . 'examples' . DIRECTORY_SEPARATOR, false);
+define('PLD_DIR_MODULES' , PLD_DIR_ROOT . 'modules'  . DIRECTORY_SEPARATOR, false);
+define('PLD_DIR_VIEWS'   , PLD_DIR_ROOT . 'views'    . DIRECTORY_SEPARATOR, false);
 
 
 // update include paths
