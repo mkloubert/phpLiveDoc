@@ -76,7 +76,17 @@ if ($type instanceof \ReflectionClass) {
 
     <h2><?php echo htmlentities(\phpLiveDoc\Page\Settings::$Title); ?></h2>
     
-    <p><?php echo htmlentities($methodDesc); ?></p>
+    <?php
+    
+    $declaredType     = $method->getDeclaringClass();
+    $declaredTypeLink = \phpLiveDoc\Helpers\ReflectionHelper::tryGetLinkUrlFromType($declaredType);
+    if (!is_null($declaredTypeLink)) {
+        ?><h6 class="subheader">declared in <a href="<?php echo $declaredTypeLink; ?>" target="_blank"><?php echo htmlentities($declaredType->getName()); ?></a></h6><?php
+    }
+    
+    ?>
+    
+    <p style="margin-top: 2em;"><?php echo htmlentities($methodDesc); ?></p>
     
     <h3>Syntax</h3>
     <pre><code class="php"><?php
@@ -105,6 +115,13 @@ echo $prefix; ?>function <?php echo htmlentities($methodName); ?>(<?php echo $pa
     // code...
 }
 </code></pre>
+
+    <?php 
+    
+    $examples = \phpLiveDoc\Examples\Example::fromMethod($method);
+    \phpLiveDoc\Helpers\DocumentationHelper::outputExamples($examples);
+    
+    ?>
 
     <h3>Parameters</h3>
 <?php
@@ -148,16 +165,18 @@ echo $prefix; ?>function <?php echo htmlentities($methodName); ?>(<?php echo $pa
             ?>
             <tr>
               <td><?php echo htmlentities(sprintf('%s$%s%s',
-                                                    $paramPrefix,
-                                                    $p->getName(), 
-                                                    $paramSuffix)); ?></td>
-              <td><?php echo htmlentities($paramDesc); ?></td>
+                                                  $paramPrefix,
+                                                  $p->getName(), 
+                                                  $paramSuffix)); ?></td>
+
+              <td><?php echo \phpLiveDoc\Helpers\DocumentationHelper::parseForHtml($paramDesc); ?></td>
             </tr>
             <?php
         }
         
 ?>
       </tbody>
+    </table>
 <?php
     }
     else {

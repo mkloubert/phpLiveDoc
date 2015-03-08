@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<examples>
+  <example>
+    <code>
+      <source><![CDATA[
+use \System\Linq;
+
+$seq1 = Enumerable::fromValues(1, 2, 3, 4);
+$seq2 = Enumerable::fromValues('one', 'two', 'three');
+
+$zipped = $seq1->zip($seq2, function($x, $y) {
+                                return sprintf('%s %s',
+                                               $x, $y);
+                            });
+
+foreach ($zipped as $item) {
+    // [0] '1 one'
+    // [1] '2 two'
+    // [2] '3 three'
+}
+]]></source>
+    </code>
+  </example>
+</examples>

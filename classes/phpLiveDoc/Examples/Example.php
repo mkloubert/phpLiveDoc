@@ -46,6 +46,34 @@ final class Example extends TM_Object {
     }
     
     
+    private static function extractExamples(array &$examples, $xmlFile) {
+        if (false === $xmlFile) {
+            return;
+        }
+        
+        try {
+            $xml = @simplexml_load_file($xmlFile);
+        
+            if ($xml instanceof \SimpleXMLElement) {
+                foreach ($xml->children() as $child) {
+                    if ('example' != $child->getName()) {
+                        continue;
+                    }
+        
+                    try {
+                        $examples[] = self::fromXml($child);
+                    }
+                    catch (\Exception $ex) {
+                        // ignore here
+                    }
+                }
+            }
+        }
+        catch (\Exception $ex) {
+            // ignore here
+        }
+    }
+    
     /**
      * Creates a list of example objects for a function.
      * 
@@ -68,29 +96,41 @@ final class Example extends TM_Object {
                                     sprintf('%s.xml',
                                             trim(strtolower($func->getName()))));
                 
-                if (false !== $xmlFile) {
-                    try {
-                        $xml = simplexml_load_file($xmlFile);
-                        
-                        if ($xml instanceof \SimpleXMLElement) {
-                            foreach ($xml->children() as $child) {
-                                if ('example' != $child->getName()) {
-                                    continue;
-                                }
-                                    
-                                try {
-                                    $result[] = self::fromXml($child);
-                                }
-                                catch (\Exception $ex) {
-                                    // ignore here
-                                }
-                            }
-                        }
-                    }
-                    catch (\Exception $ex) {
-                        // ignore here
-                    }
-                }
+                self::extractExamples($result, $xmlFile);
+            }
+        }
+        
+        return Enumerable::fromArray($result);
+    }
+    
+    /**
+     * Creates a list of example objects for a method.
+     * 
+     * @param  \ReflectionMethod|string $method The underlying method.
+     * 
+     * @return \System\Collections\Generic\IEnumerable The list of examples.
+     */
+    public static function fromMethod($method) {
+        if (!$method instanceof \ReflectionMethod) {
+            $method = new \ReflectionMethod($method);
+        }
+        
+        $result = array();
+        
+        $examplesDir = realpath(PLD_DIR_EXAMPLES);
+        if (false !== $examplesDir) {
+            $methodsDir = realpath($examplesDir . DIRECTORY_SEPARATOR . 'methods');
+            if (false !== $methodsDir) {
+                $type = $method->getDeclaringClass();
+                
+                $xmlFileName  = str_ireplace('\\', '.', $type->getName());
+                $xmlFileName .= '.' . $method->getName();
+                
+                $xmlFile = realpath($methodsDir . DIRECTORY_SEPARATOR .
+                                    sprintf('%s.xml',
+                                            trim($xmlFileName)));
+                
+                self::extractExamples($result, $xmlFile);
             }
         }
         
@@ -121,29 +161,7 @@ final class Example extends TM_Object {
                                     sprintf('%s.xml',
                                             trim($xmlFileName)));
                 
-                if (false !== $xmlFile) {
-                    try {
-                        $xml = simplexml_load_file($xmlFile);
-                
-                        if ($xml instanceof \SimpleXMLElement) {
-                            foreach ($xml->children() as $child) {
-                                if ('example' != $child->getName()) {
-                                    continue;
-                                }
-                
-                                try {
-                                    $result[] = self::fromXml($child);
-                                }
-                                catch (\Exception $ex) {
-                                    // ignore here
-                                }
-                            }
-                        }
-                    }
-                    catch (\Exception $ex) {
-                        // ignore here
-                    }
-                }
+                self::extractExamples($result, $xmlFile);
             }
         }
         

@@ -31,7 +31,7 @@ require PLD_DIR_VIEWS . 'common_view_include.php';
     <title>phpLiveDoc :: <?php echo htmlentities($this->title); ?></title>
     
     <!--  highlight.js  -->
-    <link href="css/highlight/default.css" rel="stylesheet">
+    <link href="css/highlight/zenburn.css" rel="stylesheet">
     
     <link rel="stylesheet" href="css/foundation.css" />
     
@@ -118,7 +118,7 @@ require PLD_DIR_VIEWS . 'common_view_include.php';
         });
 
         $jsTB.page.addOnLoaded(function() {
-        	$jsTB.$("#pldSearch").focus();
+            $jsTB.$("#pldSearch").focus();
         });
     
         $(document).foundation();
