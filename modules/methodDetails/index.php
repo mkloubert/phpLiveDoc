@@ -132,7 +132,7 @@ echo $prefix; ?>function <?php echo htmlentities($methodName); ?>(<?php echo $pa
     <table class="pdlFullWidth">
       <thead>
         <tr>
-          <th>Name</th>
+          <th class="pdlNameCol">Name</th>
           <th>Description</th>
         </tr>
       </thead>

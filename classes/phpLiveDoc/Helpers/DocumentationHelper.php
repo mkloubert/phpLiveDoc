@@ -155,7 +155,7 @@ final class DocumentationHelper {
             <table class="pdlFullWidth">
               <thead>
                 <tr>
-                  <th>Name</th>
+                  <th class="pdlNameCol">Name</th>
                   <th>Description</th>
                 </tr>
               </thead>

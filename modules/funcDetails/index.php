@@ -60,9 +60,22 @@ if (isset($_REQUEST['f'])) {
     
     ?>
 
-    <h2><?php echo htmlentities(\phpLiveDoc\Page\Settings::$Title); ?></h2>
+    <h2><?php echo htmlentities($func->getShortName() . ' function'); ?></h2>
     
-    <p><?php echo htmlentities($funcDesc); ?></p>
+    <?php
+    
+    $funcNs = trim($func->getNamespaceName());
+    
+    $funcNsCaption = $funcNs;
+    if (empty($funcNsCaption)) {
+        $funcNsCaption = '(root)';
+    }
+    
+    ?><h6 class="subheader">declared in namesapce <a href="index.php?ns=<?php echo urlencode($funcNs); ?>" target="_blank"><?php echo htmlentities($funcNsCaption); ?></a></h6><?php
+    
+    ?>
+    
+    <p style="margin-top: 2em;"><?php echo htmlentities($funcDesc); ?></p>
     
     <h3>Syntax</h3>
     <pre><code class="php"><?php
@@ -91,7 +104,7 @@ echo $prefix; ?>function <?php echo htmlentities($funcName); ?>(<?php echo $para
     <table class="pdlFullWidth">
       <thead>
         <tr>
-          <th>Name</th>
+          <th class="pdlNameCol">Name</th>
           <th>Description</th>
         </tr>
       </thead>

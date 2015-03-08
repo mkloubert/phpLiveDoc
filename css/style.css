@@ -10,3 +10,7 @@ table.pdlFullWidth {
    margin-right: auto;
    max-width: initial;
 }
+
+table th.pdlNameCol {
+    width: 34%;
+}

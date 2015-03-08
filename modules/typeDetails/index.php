@@ -91,9 +91,22 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
       <li class="current"><a href="#"><?php echo htmlentities($type->getName()); ?></a></li>
     </ul>
 
-    <h2><?php echo htmlentities(\phpLiveDoc\Page\Settings::$Title); ?></h2>
+    <h2><?php echo htmlentities($type->getShortName() . ' ' . $kindOfType); ?></h2>
     
-    <p><?php echo htmlentities($typeDesc); ?></p>
+    <?php
+    
+    $typeNs = trim($type->getNamespaceName());
+    
+    $typeNsCaption = $typeNs;
+    if (empty($typeNsCaption)) {
+        $typeNsCaption = '(root)';
+    }
+    
+    ?><h6 class="subheader">declared in namesapce <a href="index.php?ns=<?php echo urlencode($typeNs); ?>" target="_blank"><?php echo htmlentities($typeNsCaption); ?></a></h6><?php
+    
+    ?>
+    
+    <p style="margin-top: 2em;"><?php echo htmlentities($typeDesc); ?></p>
     
     <h3>Syntax</h3>
     <pre><code class="php"><?php 
@@ -171,7 +184,7 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
         <table class="pdlFullWidth">
           <thead>
             <tr>
-              <th>Name</th>
+              <th class="pdlNameCol">Name</th>
               <th>Description</th>
             </tr>
           </thead>  
@@ -209,7 +222,7 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
           <table class="pdlFullWidth">
             <thead>
               <tr>
-                <th>Name</th>
+                <th class="pdlNameCol">Name</th>
                 <th>Value</th>
               </tr>
             </thead>
@@ -258,7 +271,7 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
         <table class="pdlFullWidth">
           <thead>
             <tr>
-              <th>Name</th>
+              <th class="pdlNameCol">Name</th>
               <th>Description</th>
             </tr>
           </thead>  

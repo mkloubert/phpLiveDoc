@@ -23,22 +23,80 @@ require PLD_DIR_MODULES . 'common_module_include.php';
 
 \phpLiveDoc\Page\Settings::$Title = 'Home';
 
+
+$namespace = null;
+if (isset($_REQUEST['ns'])) {
+    $namespace = trim($_REQUEST['ns']);
+}
+
+$namespaceFilter = function($r) use ($namespace) {
+    if (is_null($namespace)) {
+        return true;
+    }
+    
+    return trim($r->getNamespaceName()) == $namespace;
+};
+
+$namespaceSorter = function($r) {
+    return trim(strtolower(sprintf('%s %s',
+                                   $r->getShortName(),
+                                   $r->getNamespaceName())));
+};
+
+$outputNamespace = function($r) {
+    $ns = trim($r->getNamespaceName());
+    if (!empty($ns)) {
+        ?>
+        <br />
+        <sub>declared in <a href="index.php?ns=<?php echo urlencode($ns); ?>"><?php echo htmlentities($ns); ?></a></sub>
+        <?php
+    }
+};
+
+
+if (is_null($namespace)) {
 ?>
 
 <ul class="breadcrumbs">
   <li class="current"><a href="#">Home</a></li>
 </ul>
 
+<?php
+
+}
+else {
+
+    $namespaceCaption = $namespace;
+    if (empty($namespaceCaption)) {
+        $namespaceCaption = '(root)';
+    }
+    
+?>
+
+<ul class="breadcrumbs">
+  <a href="index.php">Home</a>
+  <li class="current"><a href="#"><?php echo htmlentities($namespaceCaption); ?> namespace</a></li>
+</ul>
+
+<?php
+
+}
+
+?>
+
 <a name="classesAndInterfaces"></a>
 <h2>Classes and interfaces</h2><?php
 $types = \phpLiveDoc\Services::getTypes()
+                             ->where($namespaceFilter)
+                             ->orderBy($namespaceSorter)
                              ->toArray();
+
 if (!empty($types)) {
     ?>
     <table class="pdlFullWidth">
       <thead>
         <tr>
-          <th>Name</th>
+          <th class="pdlNameCol">Name</th>
           <th>Description</th>
         </tr>
       </thead>
@@ -53,8 +111,10 @@ if (!empty($types)) {
         <tr>
           <td>
             <a href="index.php?m=typeDetails&t=<?php echo urlencode($t->getName()); ?>">
-              <?php echo htmlentities($t->getName()); ?>
+              <?php echo htmlentities($t->getShortName()); ?>
             </a>
+            
+            <?php $outputNamespace($t); ?>
           </td>
           <td>
             <?php echo htmlentities($doc->getShortDescription()); ?>
@@ -86,7 +146,7 @@ if (!empty($constants)) {
     <table class="pdlFullWidth">
       <thead>
         <tr>
-          <th>Name</th>
+          <th class="pdlNameCol">Name</th>
           <th>Description</th>
         </tr>
       </thead>    
@@ -122,13 +182,15 @@ else {
 <a name="functions"></a>
 <h2>Functions</h2><?php
 $funcs = \phpLiveDoc\Services::getFuncs()
+                             ->where($namespaceFilter)
+                             ->orderBy($namespaceSorter)
                              ->toArray();
 if (!empty($funcs)) {
     ?>
     <table class="pdlFullWidth">
       <thead>
         <tr>
-          <th>Name</th>
+          <th class="pdlNameCol">Name</th>
           <th>Description</th>
         </tr>
       </thead>
@@ -143,7 +205,11 @@ if (!empty($funcs)) {
         <tr>
           <td>
             <a href="index.php?m=funcDetails&f=<?php echo urlencode($f->getName()); ?>">
-              <?php echo htmlentities($f->getName()); ?>
+              <?php
+                  echo htmlentities($f->getShortName());
+              ?>
+              
+              <?php $outputNamespace($f); ?>
             </a>
           </td>
           
