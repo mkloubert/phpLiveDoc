@@ -98,6 +98,59 @@ final class Example extends TM_Object {
     }
     
     /**
+     * Creates a list of example objects for a type (class or interface).
+     * 
+     * @param  \ReflectionClass|string $type The underlying type.
+     * 
+     * @return \System\Collections\Generic\IEnumerable The list of examples.
+     */
+    public static function fromType($type) {
+        if (!$type instanceof \ReflectionClass) {
+            $type = new \ReflectionClass($type);
+        }
+        
+        $result = array();
+        
+        $examplesDir = realpath(PLD_DIR_EXAMPLES);
+        if (false !== $examplesDir) {
+            $typesDir = realpath($examplesDir . DIRECTORY_SEPARATOR . 'types');
+            if (false !== $typesDir) {
+                $xmlFileName = str_ireplace('\\', '.', $type->getName());
+                
+                $xmlFile = realpath($typesDir . DIRECTORY_SEPARATOR .
+                                    sprintf('%s.xml',
+                                            trim($xmlFileName)));
+                
+                if (false !== $xmlFile) {
+                    try {
+                        $xml = simplexml_load_file($xmlFile);
+                
+                        if ($xml instanceof \SimpleXMLElement) {
+                            foreach ($xml->children() as $child) {
+                                if ('example' != $child->getName()) {
+                                    continue;
+                                }
+                
+                                try {
+                                    $result[] = self::fromXml($child);
+                                }
+                                catch (\Exception $ex) {
+                                    // ignore here
+                                }
+                            }
+                        }
+                    }
+                    catch (\Exception $ex) {
+                        // ignore here
+                    }
+                }
+            }
+        }
+        
+        return Enumerable::fromArray($result);
+    }
+    
+    /**
      * Creates a new instance from XML data.
      * 
      * @param \SimpleXMLElement|string $xml The XML data.

@@ -146,6 +146,13 @@ $getNameOfReflectorItemForSort = function($r) use ($getNameOfReflectorItem) {
 <?php
     
     ?></code></pre>
+    
+    <?php 
+    
+    $examples = \phpLiveDoc\Examples\Example::fromType($typeName);
+    \phpLiveDoc\Helpers\DocumentationHelper::outputExamples($examples);
+    
+    ?>
 
     <h3>Members</h3>
     

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<examples>
+  <example title="From array">
+    <code>
+      <source><![CDATA[
+use \System\Linq\Enumerable;
+
+$arr = array(1, 2, 3, 4);
+$seq = Enumerable::fromArray($arr);
+
+foreach ($seq as $item) {
+    echo "{$item}\n";
+}
+]]></source>
+    </code>
+  </example>
+  
+  <example title="From values">
+    <code>
+      <source><![CDATA[
+use \System\Linq\Enumerable;
+
+$seq = Enumerable::fromValues(1, 2, 3, 4, 5);
+
+foreach ($seq as $item) {
+    echo "{$item}\n";
+}
+]]></source>
+    </code>
+  </example>
+</examples>
